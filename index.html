@@ -103,18 +103,18 @@
     
     <div id="tabela" class="m-2 shadow p-1 bg-white rounded row">
         <table id="table" class="table table-striped table-hover table-responsive col">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">Região</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Município</th>
-                <th scope="col">Semana Epidemiológica</th>
-                <th scope="col">Data</th>
-                <th scope="col">Casos Acumulados</th>
-                <th scope="col">Óbitos Acumulados</th>
-            </tr>
+            <thead id="table_head" class="thead-dark">
+                <tr>
+                    <th scope="col">Região</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Município</th>
+                    <th scope="col">Semana Epidemiológica</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Casos Acumulados</th>
+                    <th scope="col">Óbitos Acumulados</th>
+                </tr>
             </thead>
-            <tbody>
+            <tbody id="table_body">
                 <tr>
                     <td>Nordeste</td>
                     <td>Ceará</td>
@@ -200,7 +200,7 @@
                     type:'GET', dataType: 'json',
                     success: (json) => {
                         $.each(json, (i, municipio) => {
-                            $('#municipio').append(new Option(municipio.nome, municipio.nome));
+                            $('#municipio').append(new Option(municipio.nome, municipio.nome))
                         })
                     }
                 })
@@ -221,6 +221,35 @@
             $('#municipio').prop('disabled', true)
             $("#regiao").val('Todas')
         })
+    
+        $('#consulta').click(() => {
+            if($('#municipio').val() != 'Todos') {
+                $('#table_body').empty()
+                $.ajax({
+                    url:'https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalMunicipio',
+                    type:'GET', dataType: 'json',
+                    success: (json) => {
+                        var municipio = json.find(obj => obj.nome == $('#municipio').val())
+                        append_table($('#regiao option:selected').text(), $('#estado option:selected').text(), 
+                        municipio.nome, 'semana', 'data', municipio.casosAcumulado, municipio.obitosAcumulado)
+                    }
+                })
+            }
+        })
+
+        function append_table(regiao, estado, municipio, semana, data, casos, obitos) {
+            $('#table_body').append(
+                `<tr>
+                    <td>${regiao}</td>
+                    <td>${estado}</td>
+                    <td>${municipio}</td>
+                    <td class="text-center">${semana}</td>
+                    <td>${data}</td>
+                    <td class="text-center">${casos}</td>
+                    <td class="text-center">${obitos}</td>
+                </tr>`
+            )
+        }
     </script>
 </body>
 
