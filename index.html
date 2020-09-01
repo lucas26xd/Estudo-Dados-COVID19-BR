@@ -31,44 +31,64 @@
                 <label for="regiao" class="col-sm-1 col-form-label">Região:</label>
                 <div class="col-sm-5">
                     <select class="form-control" id="regiao">
-                        <option>Todas</option>
-                        <option>Centro-Oeste</option>
-                        <option>Nordeste</option>
-                        <option>Norte</option>
-                        <option>Sudeste</option>
-                        <option>Sul</option>
+                        <option value="Todas">Todas</option>
+                        <option value="CO">Centro-Oeste</option>
+                        <option value="NE">Nordeste</option>
+                        <option value="N">Norte</option>
+                        <option value="SE">Sudeste</option>
+                        <option value="S">Sul</option>
                     </select>
                 </div>
 
                 <label for="estado" class="col-sm-1 col-form-label">Estado:</label>
                 <div class="col-sm-5">
                     <select class="form-control" id="estado">
-                        <option>Todos</option>
+                        <option value="Todos">Todos</option>
                     </select>
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-sm-6"></div>
-                <label for="municipio" class="col-sm-1 col-form-label">Município:</label>
-                <div class="col-sm-5">
+                <div class="col-6"></div>
+                <label for="municipio" class="col-1 col-form-label">Município:</label>
+                <div class="col-5">
                     <select class="form-control" id="municipio">
-                        <option>Todos</option>
+                        <option value="Todos">Todos</option>
                     </select>
                 </div>
             </div>
         </div>
 
         <div id="periodo" class="m-2 shadow p-1 bg-white rounded">
-            <div class="form-check row">
-                <input class="form-check-input col-sm-1" type="radio" name="hoje" id="lu" value="hoje" checked>
-                <label class="form-check-label col-sm-5 ml-4" for="lu">Última atualização: <span id="last_update" class="text-primary">31/Agosto/2020</span>.</label>
+            <div class="form-check ml-2 mb-2">
+                <input class="form-check-input" type="radio" name="periodo" id="hoje" value="hoje" checked>
+                <label class="form-check-label" for="hoje">Última atualização: <span id="last_update" class="text-primary">31/Agosto/2020</span>.</label>
             </div>
-            <div class="form-check row">
-                <input class="form-check-input col-sm-1" type="radio" name="hist" id="h" value="hist">
-                <label class="form-check-label col-sm-5 ml-4" for="h">Histórico:</label>
+            <div class="row ml-2 mb-2">
+                <div class="form-check col-2">
+                    <input class="form-check-input" type="radio" name="periodo" id="hist" value="hist">
+                    <label class="form-check-label" for="hist">Histórico:</label>
+                </div>
+                <div id="historico" class="row col-10 border">
+                    <div class="form-check ml-2 col-sm-3">
+                        <input class="form-check-input" type="radio" name="hist" id="15d" value="15d" checked>
+                        <label class="form-check-label" for="15d">Últimos 15 dias</label>
+                    </div>
+                    <div class="form-check ml-2 col-sm-3">
+                        <input class="form-check-input" type="radio" name="hist" id="1mes" value="1mes">
+                        <label class="form-check-label" for="1mes">Último mês</label>
+                    </div>
+                    <div class="form-check ml-2 col-sm-3">
+                        <input class="form-check-input" type="radio" name="hist" id="3mes" value="3mes">
+                        <label class="form-check-label" for="3mes">Últimos 3 meses</label>
+                    </div>
+                    <div class="form-check ml-2 col-sm-1">
+                        <input class="form-check-input" type="radio" name="hist" id="full" value="full">
+                        <label class="form-check-label" for="full">Completo</label>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="form-group row">
+        <div id="botoes" class="form-group row">
             <div class="col-sm-9"></div>
             <div class="col-sm-1">
                 <button class="btn btn-danger">Limpar</button>
@@ -79,8 +99,8 @@
         </div>
     </form>
     
-    <div id="tabela" class="m-2 shadow p-1 bg-white rounded">
-        <table class="table table-striped">
+    <div id="tabela" class="m-2 shadow p-1 bg-white rounded row">
+        <table id="table" class="table table-striped table-hover col">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">Região</th>
@@ -136,6 +156,7 @@
         <div class="col-sm-2"></div>
     </div>
 
+    <script src="/reqs.js"></script>
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!--Bootstrap JavaScript-->
@@ -143,15 +164,16 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
         var estados = {
-            'Centro-Oeste': ['Goiás', 'Mato Grosso', 'Mato Grosso do Sul'],
-            'Nordeste': ['Alagoas', 'Bahia', 'Ceará', 'Maranhão', 'Paraíba', 'Pernambuco', 'Piauí', 'Rio Grande do Norte', 'Sergipe'],
-            'Norte': ['Acre', 'Amapá', 'Amazonas', 'Pará', 'Rondônia', 'Roraima', 'Tocantins'],
-            'Sudeste': ['Espírio Santo', 'Minas Gerais', 'Rio de Janeiro', 'São Paulo'],
-            'Sul': ['Paraná', 'Santa Catarina', 'Rio Grande do Sul']
+            'CO': {'Goiás': 'GO', 'Mato Grosso': 'MT', 'Mato Grosso do Sul': 'MS'},
+            'NE': {'Alagoas': 'AL', 'Bahia': 'BA', 'Ceará': 'CE', 'Maranhão': 'MA', 'Paraíba': 'PB', 'Pernambuco': 'PE', 'Piauí': 'PI', 'Rio Grande do Norte': 'RN', 'Sergipe': 'SE'},
+            'N': {'Acre': 'AC', 'Amapá': 'AP', 'Amazonas': 'AM', 'Pará': 'PA', 'Rondônia': 'RO', 'Roraima': 'RR', 'Tocantins': 'TO'},
+            'SE': {'Espírito Santo': 'ES', 'Minas Gerais': 'MG', 'Rio de Janeiro': 'RJ', 'São Paulo': 'SP'},
+            'S': {'Paraná': 'PR', 'Santa Catarina': 'SC', 'Rio Grande do Sul': 'RS'}
         }
 
         $('#estado').prop('disabled', true)
         $('#municipio').prop('disabled', true)
+        $('#historico').hide()
 
         $('#regiao').change(() => {    
             $('#estado').empty()
@@ -159,11 +181,33 @@
             $('#estado').append(new Option('Todos', 'Todos'));
             if($('#regiao').val() != 'Todas') {
                 $('#estado').prop('disabled', false)
-                estados[$('#regiao').val()].forEach(element => {
-                    $('#estado').append(new Option(element, element));
-                });
+                Object.entries(estados[$('#regiao').val()]).forEach(e => {
+                    $('#estado').append(new Option(e[0], e[1]))
+                })
             }
         })
+    
+        $('#estado').change(() => {    
+            $('#municipio').empty()
+            $('#municipio').prop('disabled', true)
+            $('#municipio').append(new Option('Todos', 'Todos'));
+            if($('#estado').val() != 'Todas') {
+                $('#municipio').prop('disabled', false)
+                $.ajax({
+                    url:`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${$('#estado').val()}/municipios`,
+                    type:'GET',
+                    dataType: 'json',
+                    success: (json) => {
+                        $.each(json, (i, municipio) => {
+                            $('#municipio').append(new Option(municipio.nome, municipio.nome));
+                        })
+                    }
+                })
+            }
+        })
+
+        $('#hoje').change(() => {$('#historico').hide()})
+        $('#hist').change(() => {$('#historico').show()})
     </script>
 </body>
 
