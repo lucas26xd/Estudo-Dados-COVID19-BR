@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="Lucas Santos e Ângela Magalhães">
+    <meta name="generator" content="VS Code">
+    <meta name="description" content="Filtro para dados do COVID-19 no Brasil">
+    <meta name="keywords" content="Coronavírus, COVID-19, Dados, API">
+    <link rel="icon" type="image/x-icon" class="favicon" href="https://covid.saude.gov.br/assets/imgs/Favicon.png">
+    <title>Dados do COVID-19 no Brasil</title>
+    <!--Material Icons-->
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/3.6.95/css/materialdesignicons.min.css" />
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div id="titulo" class="m-2 shadow p-1 bg-primary rounded row text-center">
+        <a href="https://opendatasus.saude.gov.br/dataset"  class="col-sm-1" target="_blank" rel="noopener noreferrer">
+            <img src="https://opendatasus.saude.gov.br/uploads/admin/2020-05-14-142452.811052Logo-OpenDataSUS-155x55px.png" alt="Open Data" title="Open Data">
+        </a>
+        <h1 class="col-sm-11">Dados do COVID-19 no Brasil</h1>
+    </div>
+
+    <form>
+        <div id="local" class="m-2 shadow p-1 bg-white rounded">
+            <div class="form-group row">
+                <label for="regiao" class="col-sm-1 col-form-label">Região:</label>
+                <div class="col-sm-5">
+                    <select class="form-control" id="regiao">
+                        <option>Todas</option>
+                        <option>Centro-Oeste</option>
+                        <option>Nordeste</option>
+                        <option>Norte</option>
+                        <option>Sudeste</option>
+                        <option>Sul</option>
+                    </select>
+                </div>
+
+                <label for="estado" class="col-sm-1 col-form-label">Estado:</label>
+                <div class="col-sm-5">
+                    <select class="form-control" id="estado">
+                        <option>Todos</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6"></div>
+                <label for="municipio" class="col-sm-1 col-form-label">Município:</label>
+                <div class="col-sm-5">
+                    <select class="form-control" id="municipio">
+                        <option>Todos</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="periodo" class="m-2 shadow p-1 bg-white rounded">
+            <div class="form-check row">
+                <input class="form-check-input col-sm-1" type="radio" name="hoje" id="lu" value="hoje" checked>
+                <label class="form-check-label col-sm-5 ml-4" for="lu">Última atualização: <span id="last_update" class="text-primary">31/Agosto/2020</span>.</label>
+            </div>
+            <div class="form-check row">
+                <input class="form-check-input col-sm-1" type="radio" name="hist" id="h" value="hist">
+                <label class="form-check-label col-sm-5 ml-4" for="h">Histórico:</label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-9"></div>
+            <div class="col-sm-1">
+                <button class="btn btn-danger">Limpar</button>
+            </div>
+            <div class="col-sm-1">
+                <button type="submit" class="btn btn-primary">Consultar</button>
+            </div>
+        </div>
+    </form>
+    
+    <div id="tabela" class="m-2 shadow p-1 bg-white rounded">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Região</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Município</th>
+                <th scope="col">Semana Epi</th>
+                <th scope="col">Data</th>
+                <th scope="col">Casos Acumulados</th>
+                <th scope="col">Óbitos Acumulados</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Nordeste</td>
+                    <td>Ceará</td>
+                    <td>Sobral</td>
+                    <td>28/08/2020</td>
+                    <td>35</td>
+                    <td>345</td>
+                    <td>123</td>
+                </tr>
+                <tr>
+                    <td>Nordeste</td>
+                    <td>Bahia</td>
+                    <td>Salvador</td>
+                    <td>29/08/2020</td>
+                    <td>35</td>
+                    <td>1234</td>
+                    <td>564</td>
+                </tr>
+                <tr>
+                    <td>Sudeste</td>
+                    <td>São Paulo</td>
+                    <td>São Paulo</td>
+                    <td>31/08/2020</td>
+                    <td>36</td>
+                    <td>12345</td>
+                    <td>1234</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="exportacoes" class="form-group row mt-5">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3">
+            <button class="btn btn-danger">Exportar PDF</button>
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3">
+            <button class="btn btn-success">Exportar XLSX</button>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!--Bootstrap JavaScript-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        var estados = {
+            'Centro-Oeste': ['Goiás', 'Mato Grosso', 'Mato Grosso do Sul'],
+            'Nordeste': ['Alagoas', 'Bahia', 'Ceará', 'Maranhão', 'Paraíba', 'Pernambuco', 'Piauí', 'Rio Grande do Norte', 'Sergipe'],
+            'Norte': ['Acre', 'Amapá', 'Amazonas', 'Pará', 'Rondônia', 'Roraima', 'Tocantins'],
+            'Sudeste': ['Espírio Santo', 'Minas Gerais', 'Rio de Janeiro', 'São Paulo'],
+            'Sul': ['Paraná', 'Santa Catarina', 'Rio Grande do Sul']
+        }
+
+        $('#estado').prop('disabled', true)
+        $('#municipio').prop('disabled', true)
+
+        $('#regiao').change(() => {    
+            $('#estado').empty()
+            $('#estado').prop('disabled', true)
+            $('#estado').append(new Option('Todos', 'Todos'));
+            if($('#regiao').val() != 'Todas') {
+                $('#estado').prop('disabled', false)
+                estados[$('#regiao').val()].forEach(element => {
+                    $('#estado').append(new Option(element, element));
+                });
+            }
+        })
+    </script>
+</body>
+
+</html>
