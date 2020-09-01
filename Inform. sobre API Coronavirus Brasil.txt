@@ -1,0 +1,45 @@
+- Definições do Site Covid19 -
+
+Site: Coronavirus Brasil
+
+Requisições:
+
+- Portal Geral: 
+Precisa manipular o cabeçalho
+
+- Portal Geral API:
+casos confirmados e obitos confirmados;
+traz url da planilha dos dados de HOJE
+
+- Portal Região:
+Precisa manipular o cabeçalho
+(funcina o mesmo cabeçalho do portal geral)
+
+- Portal Região Saúde:
+por enquanto não vamos usar
+
+- Portal Casos:
+histórico geral do brasil por semana
+e dias, de casosAcumul, obitosAcumul, casos novos 
+e obtitos novos
+
+- Portal Região/UF:
+inform. semanal e diária de cada estado
+brasileiro
+
+- Portal Município:
+inform. de todos os municípios brasileiros
+(casos e obitos acumulados);
+está ordenado pelo número de casos acumulados
+
+- Portal Síntese:
+casos acumulados, obitos acumulados e 
+população de cada estado e região
+
+- Portal Estado:
+casos acumulados, obitos acumulados e 
+população de cada estado
+
+- Portal Estado Região:
+casos e obitos acumulados no interior e 
+na região metropolitana
