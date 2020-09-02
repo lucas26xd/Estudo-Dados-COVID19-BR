@@ -139,7 +139,8 @@
     <div id="exportacoes" class="form-group row mt-5">
         <div class="col-2"></div>
         <div class="col-3">
-            <button class="btn btn-danger">Exportar PDF</button>
+            <div id="editor"></div>
+            <button id="gerapdf" class="btn btn-danger">Exportar PDF</button>
         </div>
         <div class="col-2"></div>
         <div class="col-3">
@@ -156,7 +157,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.17.1/bootstrap-table.min.js"></script>
-
+    <!--jsPDF-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
+    <!-- Utils -->
     <script src="util.js"></script>
 
     <script>
@@ -204,8 +207,8 @@
                 })
             }
         })
-    
-        $('#estado').change(() => {    
+
+        $('#estado').change(() => {
             $('#municipio').empty()
             $('#municipio').append(new Option('Todos', 'Todos'))
             $('#municipio').prop('disabled', true)
@@ -237,7 +240,7 @@
             $('#municipio').prop('disabled', true)
             $("#regiao").val('Todas')
         })
-    
+
         $('#consulta').click(() => {
             if($('#municipio').val() != 'Todos') {
                 $.ajax({
@@ -259,6 +262,23 @@
                     }
                 })
             }
+        })
+
+        // GERAR PDF
+        var doc = new jsPDF("portrait", "mm", [510, 497])
+           
+        var specialElementHandlers = {
+            '#editor': function (element, renderer) {
+                return true
+            }
+        }
+
+        $('#gerapdf').click(function () {
+            doc.fromHTML($('#tabela').html(), 15, 15, {
+                'width': 170,
+                'elementHandlers': specialElementHandlers
+            })
+            doc.save('planilha-covid19.pdf');
         })
     </script>
 </body>
