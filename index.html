@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/3.6.95/css/materialdesignicons.min.css" />
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -26,126 +27,115 @@
         <h1 class="col-sm-9">Dados do COVID-19 no Brasil </h1>
     </div>
 
-    <!-- <form> -->
-        <div id="local" class="m-2 shadow p-1 bg-white rounded">
-            <div class="form-group row">
-                <label for="regiao" class="col-sm-1 col-form-label">Região:</label>
-                <div class="col-sm-5">
-                    <select class="form-control" id="regiao">
-                        <option value="Todas">Todas</option>
-                        <option value="CO">Centro-Oeste</option>
-                        <option value="NE">Nordeste</option>
-                        <option value="N">Norte</option>
-                        <option value="SE">Sudeste</option>
-                        <option value="S">Sul</option>
-                    </select>
-                </div>
-
-                <label for="estado" class="col-sm-1 col-form-label">Estado:</label>
-                <div class="col-sm-5">
-                    <select class="form-control" id="estado">
-                        <option value="Todos">Todos</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-6"></div>
-                <label for="municipio" class="col-sm-1 col-form-label">Município:</label>
-                <div class="col-sm-5">
-                    <select class="form-control" id="municipio">
-                        <option value="Todos">Todos</option>
-                    </select>
-                </div>
-            </div>
+    <div id="painel" class="m-2 row text-center">
+        <div id="casos-recuperados" class="p-1 shadow bg-success rounded text-white col-sm-4">
+            <h3>Casos Recuperados</h3>
+            <h1 id="numero-casos-recuperados"></h1>
         </div>
-
-        <div id="periodo" class="m-2 shadow p-1 bg-white rounded">
-            <div class="form-check ml-2 mb-2">
-                <input class="form-check-input" type="radio" name="periodo" id="hoje" value="hoje" checked>
-                <label class="form-check-label" for="hoje">Última atualização: <span id="last_update" class="text-primary">31/Agosto/2020</span>.</label>
-            </div>
-            <div class="row ml-2 mb-2">
-                <div class="form-check col-sm-2">
-                    <input class="form-check-input" type="radio" name="periodo" id="hist" value="hist">
-                    <label class="form-check-label" for="hist">Histórico:</label>
-                </div>
-                <div id="historico" class="row col-sm-10 border">
-                    <div class="form-check ml-2 col-sm-3">
-                        <input class="form-check-input" type="radio" name="hist" id="15d" value="15d" checked>
-                        <label class="form-check-label" for="15d">Últimos 15 dias</label>
-                    </div>
-                    <div class="form-check ml-2 col-sm-3">
-                        <input class="form-check-input" type="radio" name="hist" id="1mes" value="1mes">
-                        <label class="form-check-label" for="1mes">Último mês</label>
-                    </div>
-                    <div class="form-check ml-2 col-sm-3">
-                        <input class="form-check-input" type="radio" name="hist" id="3mes" value="3mes">
-                        <label class="form-check-label" for="3mes">Últimos 3 meses</label>
-                    </div>
-                    <div class="form-check ml-2 col-sm-1">
-                        <input class="form-check-input" type="radio" name="hist" id="full" value="full">
-                        <label class="form-check-label" for="full">Completo</label>
-                    </div>
-                </div>
-            </div>
+        <div id="casos-confirmados" class="p-1 shadow bg-info rounded text-white col-sm-4">
+            <h3>Casos Confirmados</h3>
+            <h1 id="numero-casos-confirmados"></h1>
         </div>
-        <div id="botoes" class="form-group row">
-            <div class="col-8"></div>
-            <div class="col-1">
-                <button id="limpa" class="btn btn-danger">Limpar</button>
-            </div>
-            <div class="col-1"></div>
-            <div class="col-1">
-                <button id="consulta" class="btn btn-primary">Consultar</button>
-            </div>
+        <div id="obitos-confirmados" class="p-1 shadow bg-dark rounded text-white col-sm-4">
+            <h3>Óbitos Confirmados</h3>
+            <h1 id="numero-obitos-confirmados"></h1>
         </div>
-    <!-- </form> -->
-    
-    <div id="tabela" class="m-2 shadow p-1 bg-white rounded row">
-        <table id="table" class="table table-striped table-hover table-responsive col">
-            <thead id="table_head" class="thead-dark">
-                <tr>
-                    <th scope="col">Região</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Município</th>
-                    <th scope="col">Semana Epidemiológica</th>
-                    <th scope="col">Data</th>
-                    <th scope="col">Casos Acumulados</th>
-                    <th scope="col">Óbitos Acumulados</th>
-                </tr>
-            </thead>
-            <tbody id="table_body">
-                <tr>
-                    <td>Nordeste</td>
-                    <td>Ceará</td>
-                    <td>Sobral</td>
-                    <td class="text-center">35</td>
-                    <td>28/08/2020</td>
-                    <td class="text-center">345</td>
-                    <td class="text-center">123</td>
-                </tr>
-                <tr>
-                    <td>Nordeste</td>
-                    <td>Bahia</td>
-                    <td>Salvador</td>
-                    <td class="text-center">35</td>
-                    <td>29/08/2020</td>
-                    <td class="text-center">1234</td>
-                    <td class="text-center">564</td>
-                </tr>
-                <tr>
-                    <td>Sudeste</td>
-                    <td>São Paulo</td>
-                    <td>São Paulo</td>
-                    <td class="text-center">36</td>
-                    <td>31/08/2020</td>
-                    <td class="text-center">12345</td>
-                    <td class="text-center">1234</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 
+    <div id="local" class="m-2 shadow p-1 bg-white rounded">
+        <div class="form-group row">
+            <label for="regiao" class="col-sm-1 col-form-label">Região:</label>
+            <div class="col-sm-5">
+                <select class="form-control" id="regiao">
+                    <option value="Todas">Todas</option>
+                    <option value="CO">Centro-Oeste</option>
+                    <option value="NE">Nordeste</option>
+                    <option value="N">Norte</option>
+                    <option value="SE">Sudeste</option>
+                    <option value="S">Sul</option>
+                </select>
+            </div>
+
+            <label for="estado" class="col-sm-1 col-form-label">Estado:</label>
+            <div class="col-sm-5">
+                <select class="form-control" id="estado">
+                    <option value="Todos">Todos</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6"></div>
+            <label for="municipio" class="col-sm-1 col-form-label">Município:</label>
+            <div class="col-sm-5">
+                <select class="form-control" id="municipio">
+                    <option value="Todos">Todos</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div id="periodo" class="m-2 shadow p-1 bg-white rounded">
+        <div class="form-check ml-2 mb-2">
+            <input class="form-check-input" type="radio" name="periodo" id="hoje" value="hoje" checked>
+            <label class="form-check-label" for="hoje">Última atualização: <span id="last_update" class="text-success"></span>.</label>
+        </div>
+        <div class="row ml-2 mb-2">
+            <div class="form-check col-sm-2">
+                <input class="form-check-input" type="radio" name="periodo" id="hist" value="hist">
+                <label class="form-check-label" for="hist">Histórico:</label>
+            </div>
+            <div id="historico" class="row col-sm-10 border">
+                <div class="form-check ml-2 col-sm-3">
+                    <input class="form-check-input" type="radio" name="hist" id="15d" value="15d" checked>
+                    <label class="form-check-label" for="15d">Últimos 15 dias</label>
+                </div>
+                <div class="form-check ml-2 col-sm-3">
+                    <input class="form-check-input" type="radio" name="hist" id="1mes" value="1mes">
+                    <label class="form-check-label" for="1mes">Último mês</label>
+                </div>
+                <div class="form-check ml-2 col-sm-3">
+                    <input class="form-check-input" type="radio" name="hist" id="3mes" value="3mes">
+                    <label class="form-check-label" for="3mes">Últimos 3 meses</label>
+                </div>
+                <div class="form-check ml-2 col-sm-1">
+                    <input class="form-check-input" type="radio" name="hist" id="full" value="full">
+                    <label class="form-check-label" for="full">Completo</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="botoes" class="form-group row">
+        <div class="col-8"></div>
+        <div class="col-1">
+            <button id="limpa" class="btn btn-danger">Limpar</button>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-1">
+            <button id="consulta" class="btn btn-primary">Consultar</button>
+        </div>
+    </div>
+
+    <div id="tabela" class="m-2 shadow p-1 bg-white rounded">
+        <table id="table" data-height="400" data-virtual-scroll="true" data-show-columns="true" data-search="true" 
+        data-search-text="Procurar..." data-toolbar=".toolbar" class="table table-striped table-hover table-bordered">
+            <thead id="table_head" class="thead-dark">
+                <tr>
+                    <th data-field="regiao">Região</th>
+                    <th data-field="estado">Estado</th>
+                    <th data-field="municipio">Município</th>
+                    <th data-field="semana">Semana Epidemiológica</th>
+                    <th data-field="data">Data</th>
+                    <th data-field="casos">Casos Acumulados</th>
+                    <th data-field="obitos">Óbitos Acumulados</th>
+                </tr>
+            </thead>
+        </table>
+        <div class="toolbar">
+            Total de <strong><span id="total"></span></strong> linhas.
+        </div>
+    </div>
+      
     <div id="exportacoes" class="form-group row mt-5">
         <div class="col-2"></div>
         <div class="col-3">
@@ -158,32 +148,58 @@
         <div class="col-sm-2"></div>
     </div>
 
-    <script src="/reqs.js"></script>
+    <footer class="text-center text-secondary">Baixe a última planilha disponibilizada pelo DataSUS dos dados atualizados <a id="HOJE_LINK" title="Dados atuais em cada município brasileiro">aqui</a> ou baixe toda planilha do histórico <a id="HIST_LINK" title="Todos os dados em cada município brasileiro">aqui</a>.</footer>
+
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!--Bootstrap JavaScript-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script>
-        var estados = {
-            'CO': {'Goiás': 'GO', 'Mato Grosso': 'MT', 'Mato Grosso do Sul': 'MS'},
-            'NE': {'Alagoas': 'AL', 'Bahia': 'BA', 'Ceará': 'CE', 'Maranhão': 'MA', 'Paraíba': 'PB', 'Pernambuco': 'PE', 'Piauí': 'PI', 'Rio Grande do Norte': 'RN', 'Sergipe': 'SE'},
-            'N': {'Acre': 'AC', 'Amapá': 'AP', 'Amazonas': 'AM', 'Pará': 'PA', 'Rondônia': 'RO', 'Roraima': 'RR', 'Tocantins': 'TO'},
-            'SE': {'Espírito Santo': 'ES', 'Minas Gerais': 'MG', 'Rio de Janeiro': 'RJ', 'São Paulo': 'SP'},
-            'S': {'Paraná': 'PR', 'Santa Catarina': 'SC', 'Rio Grande do Sul': 'RS'}
-        }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.17.1/bootstrap-table.min.js"></script>
 
+    <script src="util.js"></script>
+
+    <script>
+        //INICIALIZAÇÕES
         $('#estado').prop('disabled', true)
         $('#municipio').prop('disabled', true)
         $('#historico').hide()
 
+        // REQUISIÇÕES
+        $.ajax({ // Pega todo histórico atual por estado
+            url:'https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalRegiaoUf',
+            type:'GET', dataType: 'json',
+            success: povoa_tabela
+        })
+
+        $.ajax({ // Pega números gerais e link da planilha HOJE
+            url:'https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalGeralApi',
+            type:'GET', dataType: 'json',
+            success: json => {
+                $('#HOJE_LINK').attr('href', json['planilha']['arquivo']['url'])
+                $('#numero-casos-recuperados').text(mask(json['confirmados']['recuperados']))
+                $('#numero-casos-confirmados').text(mask(json['confirmados']['total']))
+                $('#numero-obitos-confirmados').text(mask(json['obitos']['total']))
+            }
+        })
+
+        $.ajax({ // Pega ultima atualização e link da planilha HIST
+            url:'https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalGeral',
+            type:'GET', dataType: 'json', headers: {'X-Parse-Application-Id': 'unAFkcaNDeXajurGB7LChj8SgQYS2ptm'},
+            success: json => {
+                $('#HIST_LINK').attr('href', json['results'][0]['arquivo']['url'])
+                $('#last_update').text(json['results'][0]['dt_atualizacao'])
+            }
+        })
+
+        // EVENTOS
         $('#regiao').change(() => {    
             $('#estado').empty()
             $('#estado').append(new Option('Todos', 'Todos'))
             $('#estado').prop('disabled', true)
             if($('#regiao').val() != 'Todas') {
                 $('#estado').prop('disabled', false)
-                Object.entries(estados[$('#regiao').val()]).forEach(e => {
+                Object.entries(estados[$('#regiao').val()][1]).forEach(e => {
                     $('#estado').append(new Option(e[0], e[1]))
                 })
             }
@@ -224,32 +240,26 @@
     
         $('#consulta').click(() => {
             if($('#municipio').val() != 'Todos') {
-                $('#table_body').empty()
                 $.ajax({
                     url:'https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalMunicipio',
                     type:'GET', dataType: 'json',
-                    success: (json) => {
+                    success: json => {
                         var municipio = json.find(obj => obj.nome == $('#municipio').val())
-                        append_table($('#regiao option:selected').text(), $('#estado option:selected').text(), 
-                        municipio.nome, 'semana', 'data', municipio.casosAcumulado, municipio.obitosAcumulado)
+                        var linha = {
+                            'regiao': $('#regiao option:selected').text(),
+                            'estado': $('#estado option:selected').text(),
+                            'municipio': municipio['nome'],
+                            'semana': labelsSemanas[labelsSemanas.length-1],
+                            'data': labelsDias[labelsDias.length-1]+'/2020',
+                            'casos': municipio['casosAcumulado'],
+                            'obitos': municipio['obitosAcumulado']
+                        }
+                        $('#table').bootstrapTable('load', [linha])
+                        $('#total').text(1)
                     }
                 })
             }
         })
-
-        function append_table(regiao, estado, municipio, semana, data, casos, obitos) {
-            $('#table_body').append(
-                `<tr>
-                    <td>${regiao}</td>
-                    <td>${estado}</td>
-                    <td>${municipio}</td>
-                    <td class="text-center">${semana}</td>
-                    <td>${data}</td>
-                    <td class="text-center">${casos}</td>
-                    <td class="text-center">${obitos}</td>
-                </tr>`
-            )
-        }
     </script>
 </body>
 
