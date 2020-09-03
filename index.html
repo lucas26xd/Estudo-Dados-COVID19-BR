@@ -201,6 +201,9 @@
         // hist_estado()
         planilha_hoje()
         planilha_hist()
+        get_brasil_io($('#regiao option:selected').text(), $('#estado').val(), $('#municipio').val(),
+                          $('#hoje').prop('checked'), $('#15d').prop('checked'), 
+                          $('#1mes').prop('checked'), $('#3mes').prop('checked'))
 
         // EVENTOS
         $('#regiao').change(() => {    
