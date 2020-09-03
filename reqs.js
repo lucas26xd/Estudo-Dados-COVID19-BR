@@ -122,6 +122,11 @@ function req_brasil_io(url, data=[], qtdDias=0, regiao='') {
                 $('#table').bootstrapTable({data: table}) // caso seja a primeira vez que a tabela seja povoada
                 $('#table').bootstrapTable('load', table)
             }
+        }, 
+        statusCode: {
+            429: json => {
+                alert('Limite de tentativas excedido, tente novamente em ' + json['available_in'])
+            }
         }
     })
 }
