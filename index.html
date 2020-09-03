@@ -21,29 +21,30 @@
 </head>
 
 <body>
+    <!--CABEÇALHO DO SITE-->
     <div id="titulo" class="m-2 shadow p-1 bg-primary rounded row text-center">
         <a href="https://opendatasus.saude.gov.br/dataset"  class="col-sm-2" target="_blank" rel="noopener noreferrer">
             <img src="https://opendatasus.saude.gov.br/uploads/admin/2020-05-14-142452.811052Logo-OpenDataSUS-155x55px.png" alt="Open Data" title="Open Data">
         </a>
         <!-- <div class="col-sm-1"></div> -->
-        <h1 class="col-sm-9">Dados do COVID-19 no Brasil </h1>
+        <h1 class="col-sm-9 text-white">Dados do COVID-19 no Brasil</h1>
     </div>
-
+    <!--PAINEL DE DADOS ATUALIZADOS-->    
     <div id="painel" class="m-2 row text-center">
-        <div id="casos-recuperados" class="p-1 shadow bg-success rounded text-white col-sm-4">
+        <div id="casos-recuperados" class="p-1 shadow bg-success rounded text-white col-md ml-1 mr-1">
             <h3>Casos Recuperados</h3>
             <h1 id="numero-casos-recuperados"></h1>
         </div>
-        <div id="casos-confirmados" class="p-1 shadow bg-info rounded text-white col-sm-4">
+        <div id="casos-confirmados" class="p-1 shadow bg-info rounded text-white col-md ml-1 mr-1">
             <h3>Casos Confirmados</h3>
             <h1 id="numero-casos-confirmados"></h1>
         </div>
-        <div id="obitos-confirmados" class="p-1 shadow bg-dark rounded text-white col-sm-4">
+        <div id="obitos-confirmados" class="p-1 shadow bg-dark rounded text-white col-md ml-1 mr-1">
             <h3>Óbitos Confirmados</h3>
             <h1 id="numero-obitos-confirmados"></h1>
         </div>
     </div>
-
+    <!--OPÇÕES DE FILTRO POR ÁREA-->    
     <div id="local" class="m-2 shadow p-1 bg-white rounded">
         <div class="form-group row">
             <label for="regiao" class="col-sm-1 col-form-label">Região:</label>
@@ -75,7 +76,7 @@
             </div>
         </div>
     </div>
-
+    <!--OPÇÕES DE FILTRO POR PERÍODO-->
     <div id="periodo" class="m-2 shadow p-1 bg-white rounded">
         <div class="form-check ml-2 mb-2">
             <input class="form-check-input" type="radio" name="periodo" id="hoje" value="hoje" checked>
@@ -106,7 +107,7 @@
             </div>
         </div>
     </div>
-
+    <!--BOTÕES CONSULTA E LIMPA CAMPOS-->    
     <div id="botoes" class="form-group row">
         <div class="col-sm-7"></div>
         <div class="col-sm-1">
@@ -117,7 +118,7 @@
             <button id="consulta" class="btn btn-primary">Consultar</button>
         </div>
     </div>
-
+    <!--EXIBIÇÃO DA TABELA DE DADOS-->
     <div id="tabela" class="m-2 shadow p-1 bg-white rounded">
         <table id="table"
         data-locale="pt-BR"
@@ -145,7 +146,7 @@
             </thead>
         </table>
     </div>
-      
+    <!--BOTÕES DE EXPORTAÇÃO DA TABELA-->  
     <div id="exportacoes" class="form-group row">
         <div class="col-1"></div>
         <div class="col-3">
@@ -162,9 +163,9 @@
         </div>
         <div class="col-1"></div>
     </div>
-
-    <footer class="text-center text-secondary">Baixe a última planilha disponibilizada pelo DataSUS dos dados atualizados <a id="HOJE_LINK" title="Dados atuais em cada município brasileiro">aqui</a> ou baixe toda planilha do histórico <a id="HIST_LINK" title="Todos os dados em cada município brasileiro">aqui</a>.</footer>
-
+    <!--RODAPÉ DO SITE-->    
+    <footer class="text-center text-secondary">Baixe a última planilha de dados atualizados disponibilizada pelo DataSUS <a id="HOJE_LINK" title="Dados atuais em cada município brasileiro">aqui</a> ou baixe toda planilha do histórico <a id="HIST_LINK" title="Todos os dados em cada município brasileiro">aqui</a>.</footer>
+    <!--BIBLIOTECAS-->
     <!-- JQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <!--Bootstrap JavaScript-->
@@ -304,5 +305,4 @@
         })
     </script>
 </body>
-
 </html>
