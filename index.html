@@ -108,12 +108,12 @@
     </div>
 
     <div id="botoes" class="form-group row">
-        <div class="col-8"></div>
-        <div class="col-1">
+        <div class="col-sm-7"></div>
+        <div class="col-sm-1">
             <button id="limpa" class="btn btn-danger">Limpar</button>
         </div>
-        <div class="col-1"></div>
-        <div class="col-1">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-1">
             <button id="consulta" class="btn btn-primary">Consultar</button>
         </div>
     </div>
@@ -126,7 +126,7 @@
         data-show-toggle="true"
         data-show-fullscreen="true"
         data-search="true"
-        data-toolbar=".toolbar"
+        data-toolbar="#exportacoes"
         data-pagination="true"
         data-page-list="[10, 25, 50, 100, all]"
         class="table table-striped table-hover table-bordered">
@@ -144,7 +144,7 @@
         </table>
     </div>
       
-    <div id="exportacoes" class="form-group row mt-5">
+    <div id="exportacoes" class="form-group row">
         <div class="col-1"></div>
         <div class="col-3">
             <div id="editor"></div>
@@ -196,7 +196,7 @@
         $('#historico').hide()
 
         // REQUISIÇÕES
-        hist_estado()
+        // hist_estado()
         planilha_hoje()
         planilha_hist()
 
@@ -212,6 +212,10 @@
                 })
             }
             $('#estado').selectpicker('refresh')
+            $('#municipio').empty()
+            $('#municipio').append(new Option('Todos', 'Todos'))
+            $('#municipio').prop('disabled', true)
+            $('#municipio').selectpicker('refresh')
         })
 
         $('#estado').change(() => {
@@ -243,9 +247,12 @@
         })
 
         $('#consulta').click(() => {
-            if($('#municipio').val() != 'Todos') {
-                hoje_municipios()
-            }
+            // if($('#municipio').val() != 'Todos') {
+            //     hoje_municipios()
+            // }
+            get_brasil_io($('#regiao').val(), $('#estado').val(), $('#municipio').val(),
+                          $('#hoje').prop('checked'), $('#hist').prop('checked'), $('#15d').prop('checked'), 
+                          $('#1mes').prop('checked'), $('#3mes').prop('checked'), $('#full').prop('checked'))
         })
 
         // GERAR PDF
@@ -283,19 +290,15 @@
         })
 
         $('#baixarXLS').click(() => {
-            // $('#table').attr('data-pagination', false)
-            // $('#table').attr('data-page-list', '[10, ALL]')
-            // $('#table').bootstrapTable('togglePagination')
-            // $('#table').bootstrapTable('refresh')
+            togglePagination()
             $('#table').tableExport({fileName:'Planilha', worksheetName: 'Dados', type:'excel', mso:{fileFormat:'xlsx'}})
-            // $('#table').bootstrapTable('togglePagination')
-            // $('#table').attr('data-pagination', true)
-            // $('#table').attr('data-page-list', '[10, 25, 50, 100, ALL]')
-            // $('#table').bootstrapTable('refresh')
+            togglePagination()
         })
 
         $('#baixarCSV').click(() => {
+            togglePagination()
             $('#table').tableExport({fileName:'Tabela', type:'csv'})
+            togglePagination()
         })
     </script>
 </body>

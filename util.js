@@ -63,3 +63,11 @@ function mask(number) { // Máscara para colocar pontos nos números grandes
     }
     return number
 }
+
+function togglePagination() {
+    var pag = !Boolean($('#table').attr('data-pagination'))
+    $('#table').attr('data-pagination', pag)
+    $('#table').attr('data-page-list', `[10, ${!pag ? '25, 50, 100,' : ''} ALL]`)
+    $('#table').bootstrapTable('refresh')
+    $('#table').bootstrapTable('togglePagination')
+}

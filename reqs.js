@@ -62,3 +62,26 @@ function hoje_municipios() { // Pega ultimos dados de cada municipio
         }
     })
 }
+
+function get_brasil_io(regiao, estado, municipio, is_last, hist_15d, hist_1m, hist_3m, hist_full) { // Pega dados da API do Brasil IO ?search=&epidemiological_week=&date=&order_for_place=&state=CE&city=Cruz&city_ibge_code=&place_type=city&last_available_date=&is_last=False&is_repeated=
+    var url = 'https://brasil.io/api/dataset/covid19/caso_full/data/?format=json'
+    if(!hist_full) {
+        if(regiao == 'Todas')
+            url += `&place_type=state`
+        if(estado != 'Todos') 
+            url += `&state=${estado}`
+        if(municipio != 'Todos') 
+            url += `&city=${municipio}&place_type=city`
+        if(is_last) 
+            url += '&is_last=True'
+    } else {
+        if (hist_15d) {
+
+        } else if (hist_1m) {
+            
+        } else if (hist_3m) {
+            
+        }
+    }
+    console.log(url)
+}
