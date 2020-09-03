@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -15,7 +15,9 @@
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/3.6.95/css/materialdesignicons.min.css" />
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -46,7 +48,7 @@
         <div class="form-group row">
             <label for="regiao" class="col-sm-1 col-form-label">Região:</label>
             <div class="col-sm-5">
-                <select class="form-control" id="regiao">
+                <select id="regiao" class="form-control selectpicker" data-live-search="true" data-live-search-placeholder="Procurar...">
                     <option value="Todas">Todas</option>
                     <option value="CO">Centro-Oeste</option>
                     <option value="NE">Nordeste</option>
@@ -58,7 +60,7 @@
 
             <label for="estado" class="col-sm-1 col-form-label">Estado:</label>
             <div class="col-sm-5">
-                <select class="form-control" id="estado">
+                <select id="estado" class="form-control selectpicker" data-live-search="true" data-live-search-placeholder="Procurar...">
                     <option value="Todos">Todos</option>
                 </select>
             </div>
@@ -67,7 +69,7 @@
             <div class="col-sm-6"></div>
             <label for="municipio" class="col-sm-1 col-form-label">Município:</label>
             <div class="col-sm-5">
-                <select class="form-control" id="municipio">
+                <select id="municipio" class="form-control selectpicker" data-live-search="true" data-live-search-placeholder="Procurar...">
                     <option value="Todos">Todos</option>
                 </select>
             </div>
@@ -117,9 +119,18 @@
     </div>
 
     <div id="tabela" class="m-2 shadow p-1 bg-white rounded">
-        <table id="table" data-height="400" data-virtual-scroll="true" data-show-columns="true" data-search="true" 
-        data-search-text="Procurar..." data-toolbar=".toolbar" class="table table-striped table-hover table-bordered">
-            <thead id="table_head" class="thead-dark">
+        <table id="table"
+        data-locale="pt-BR"
+        data-show-columns="true"
+        data-show-columns-toggle-all="true"
+        data-show-toggle="true"
+        data-show-fullscreen="true"
+        data-search="true"
+        data-toolbar=".toolbar"
+        data-pagination="true"
+        data-page-list="[10, 25, 50, 100, all]"
+        class="table table-striped table-hover table-bordered">
+            <thead class="thead-dark">
                 <tr>
                     <th data-field="regiao">Região</th>
                     <th data-field="estado">Estado</th>
@@ -131,69 +142,63 @@
                 </tr>
             </thead>
         </table>
-        <div class="toolbar">
-            Total de <strong><span id="total"></span></strong> linhas.
-        </div>
     </div>
       
     <div id="exportacoes" class="form-group row mt-5">
-        <div class="col-2"></div>
+        <div class="col-1"></div>
         <div class="col-3">
             <div id="editor"></div>
-            <button id="gerapdf" class="btn btn-danger">Exportar PDF</button>
+            <button id="baixarPDF" class="btn btn-danger" title="Exportar tabela para PDF.">Baixar PDF</button>
         </div>
-        <div class="col-2"></div>
+        <div class="col-1"></div>
         <div class="col-3">
-            <button class="btn btn-success">Exportar XLSX</button>
+            <button id="baixarXLS" class="btn btn-success" title="Exportar tabela para planilha Excel.">Baixar XLS</button>
         </div>
-        <div class="col-sm-2"></div>
+        <div class="col-1"></div>
+        <div class="col-3">
+            <button id="baixarCSV" class="btn btn-secondary" title="Exportar tabela para CSV.">Baixar CSV</button>
+        </div>
+        <div class="col-1"></div>
     </div>
 
     <footer class="text-center text-secondary">Baixe a última planilha disponibilizada pelo DataSUS dos dados atualizados <a id="HOJE_LINK" title="Dados atuais em cada município brasileiro">aqui</a> ou baixe toda planilha do histórico <a id="HIST_LINK" title="Todos os dados em cada município brasileiro">aqui</a>.</footer>
 
     <!-- JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <!--Bootstrap JavaScript-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.17.1/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.17.1/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table-locale-all.min.js"></script>
+
+    <!-- Salvar tabela -->
+    <script type="text/javascript" src="libs/FileSaver/FileSaver.min.js"></script>
+    <!-- EXCEL -->
+    <script type="text/javascript" src="libs/js-xlsx/xlsx.core.min.js"></script>
+    <!-- PDF -->
+    <script type="text/javascript" src="libs/jsPDF/jspdf.min.js"></script>
+    <script type="text/javascript" src="libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+
     <!--jsPDF-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script> -->
     <!-- Utils -->
-    <script src="util.js"></script>
+    <script type="text/javascript" src="util.js"></script>
+    <script type="text/javascript" src="reqs.js"></script>
 
     <script>
         //INICIALIZAÇÕES
         $('#estado').prop('disabled', true)
+        $('#estado').selectpicker('refresh')
         $('#municipio').prop('disabled', true)
+        $('#municipio').selectpicker('refresh')
         $('#historico').hide()
 
         // REQUISIÇÕES
-        $.ajax({ // Pega todo histórico atual por estado
-            url:'https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalRegiaoUf',
-            type:'GET', dataType: 'json',
-            success: povoa_tabela
-        })
-
-        $.ajax({ // Pega números gerais e link da planilha HOJE
-            url:'https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalGeralApi',
-            type:'GET', dataType: 'json',
-            success: json => {
-                $('#HOJE_LINK').attr('href', json['planilha']['arquivo']['url'])
-                $('#numero-casos-recuperados').text(mask(json['confirmados']['recuperados']))
-                $('#numero-casos-confirmados').text(mask(json['confirmados']['total']))
-                $('#numero-obitos-confirmados').text(mask(json['obitos']['total']))
-            }
-        })
-
-        $.ajax({ // Pega ultima atualização e link da planilha HIST
-            url:'https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalGeral',
-            type:'GET', dataType: 'json', headers: {'X-Parse-Application-Id': 'unAFkcaNDeXajurGB7LChj8SgQYS2ptm'},
-            success: json => {
-                $('#HIST_LINK').attr('href', json['results'][0]['arquivo']['url'])
-                $('#last_update').text(json['results'][0]['dt_atualizacao'])
-            }
-        })
+        hist_estado()
+        planilha_hoje()
+        planilha_hist()
 
         // EVENTOS
         $('#regiao').change(() => {    
@@ -202,10 +207,11 @@
             $('#estado').prop('disabled', true)
             if($('#regiao').val() != 'Todas') {
                 $('#estado').prop('disabled', false)
-                Object.entries(estados[$('#regiao').val()][1]).forEach(e => {
-                    $('#estado').append(new Option(e[0], e[1]))
+                Object.entries(estados[$('#regiao').val()][1]).forEach(est => {
+                    $('#estado').append(new Option(est[0], est[1]))
                 })
             }
+            $('#estado').selectpicker('refresh')
         })
 
         $('#estado').change(() => {
@@ -214,16 +220,9 @@
             $('#municipio').prop('disabled', true)
             if($('#estado').val() != 'Todos') {
                 $('#municipio').prop('disabled', false)
-                $.ajax({
-                    url:`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${$('#estado').val()}/municipios`,
-                    type:'GET', dataType: 'json',
-                    success: (json) => {
-                        $.each(json, (i, municipio) => {
-                            $('#municipio').append(new Option(municipio.nome, municipio.nome))
-                        })
-                    }
-                })
+                get_municipios_estado($('#estado').val())
             }
+            $('#municipio').selectpicker('refresh')
         })
 
         $('#hoje').change(() => {$('#historico').hide()})
@@ -235,50 +234,68 @@
             $('#estado').empty()
             $('#estado').append(new Option('Todos', 'Todos'))
             $('#estado').prop('disabled', true)
+            $('#estado').selectpicker('refresh')
             $('#municipio').empty()
             $('#municipio').append(new Option('Todos', 'Todos'))
             $('#municipio').prop('disabled', true)
+            $('#municipio').selectpicker('refresh')
             $("#regiao").val('Todas')
         })
 
         $('#consulta').click(() => {
             if($('#municipio').val() != 'Todos') {
-                $.ajax({
-                    url:'https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalMunicipio',
-                    type:'GET', dataType: 'json',
-                    success: json => {
-                        var municipio = json.find(obj => obj.nome == $('#municipio').val())
-                        var linha = {
-                            'regiao': $('#regiao option:selected').text(),
-                            'estado': $('#estado option:selected').text(),
-                            'municipio': municipio['nome'],
-                            'semana': labelsSemanas[labelsSemanas.length-1],
-                            'data': labelsDias[labelsDias.length-1]+'/2020',
-                            'casos': municipio['casosAcumulado'],
-                            'obitos': municipio['obitosAcumulado']
-                        }
-                        $('#table').bootstrapTable('load', [linha])
-                        $('#total').text(1)
-                    }
-                })
+                hoje_municipios()
             }
         })
 
         // GERAR PDF
-        var doc = new jsPDF("portrait", "mm", [510, 497])
+        // var doc = new jsPDF("portrait", "mm", [510, 497])
            
-        var specialElementHandlers = {
-            '#editor': function (element, renderer) {
-                return true
-            }
-        }
+        // var specialElementHandlers = {
+        //     '#editor': function (element, renderer) {
+        //         return true
+        //     }
+        // }
 
-        $('#gerapdf').click(function () {
-            doc.fromHTML($('#tabela').html(), 15, 15, {
-                'width': 170,
-                'elementHandlers': specialElementHandlers
-            })
-            doc.save('planilha-covid19.pdf');
+        // $('#gerapdf').click(function () {
+        //     doc.fromHTML($('#tabela').html(), 15, 15, {
+        //         'width': 170,
+        //         'elementHandlers': specialElementHandlers
+        //     })
+        //     doc.save('planilha-covid19.pdf');
+        // })
+
+        $('#baixarPDF').click(() => {
+            // $('#table').tableExport({ type:'pdf',
+            //                         jspdf: {orientation: 'l',
+            //                                 format: 'a3',
+            //                                 margins: {left:10, right:10, top:20, bottom:20},
+            //                                 autotable: {styles: {fillColor: 'inherit', 
+            //                                                      textColor: 'inherit'},
+            //                                             tableWidth: 'auto'}
+            //                         }
+            //                         })
+            $('#table').tableExport({fileName:'Arquivo', type:'pdf',
+                                     jspdf: {orientation: 'p',
+                                             margins: {left:20, top:10},
+                                             autotable: false}
+                                    })
+        })
+
+        $('#baixarXLS').click(() => {
+            // $('#table').attr('data-pagination', false)
+            // $('#table').attr('data-page-list', '[10, ALL]')
+            // $('#table').bootstrapTable('togglePagination')
+            // $('#table').bootstrapTable('refresh')
+            $('#table').tableExport({fileName:'Planilha', worksheetName: 'Dados', type:'excel', mso:{fileFormat:'xlsx'}})
+            // $('#table').bootstrapTable('togglePagination')
+            // $('#table').attr('data-pagination', true)
+            // $('#table').attr('data-page-list', '[10, 25, 50, 100, ALL]')
+            // $('#table').bootstrapTable('refresh')
+        })
+
+        $('#baixarCSV').click(() => {
+            $('#table').tableExport({fileName:'Tabela', type:'csv'})
         })
     </script>
 </body>

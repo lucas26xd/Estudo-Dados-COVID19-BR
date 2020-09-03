@@ -46,6 +46,8 @@ function povoa_tabela(json) { // povoa a tabela com todo o histórico atual
             linhas.push({
                 'regiao': regiao,
                 'estado': estado,
+                'municipio': '',
+                'semana': '',
                 'data': reg['_id']+'/2020',
                 'casos': reg['casosAcumulado'],
                 'obitos': reg['obitosAcumulado']
@@ -53,7 +55,6 @@ function povoa_tabela(json) { // povoa a tabela com todo o histórico atual
         })
     })
     $('#table').bootstrapTable({data: linhas})
-    $('#total').text(linhas.length)
 }
 
 function mask(number) { // Máscara para colocar pontos nos números grandes
