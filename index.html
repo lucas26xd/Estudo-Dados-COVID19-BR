@@ -132,13 +132,15 @@
         class="table table-striped table-hover table-bordered">
             <thead class="thead-dark">
                 <tr>
-                    <th data-field="regiao">Região</th>
-                    <th data-field="estado">Estado</th>
-                    <th data-field="municipio">Município</th>
-                    <th data-field="semana">Semana Epidemiológica</th>
-                    <th data-field="data">Data</th>
-                    <th data-field="casos">Casos Acumulados</th>
-                    <th data-field="obitos">Óbitos Acumulados</th>
+                    <th data-sortable="true" data-field="regiao">Região</th>
+                    <th data-sortable="true" data-field="estado">Estado</th>
+                    <th data-sortable="true" data-field="municipio">Município</th>
+                    <th data-sortable="true" data-field="semana">Semana</th>
+                    <th data-sortable="true" data-field="data">Data</th>
+                    <th data-sortable="true" data-field="casos">Casos Novos</th>
+                    <th data-sortable="true" data-field="casosAcc">Casos Acum</th>
+                    <th data-sortable="true" data-field="obitos">Óbitos Novos</th>
+                    <th data-sortable="true" data-field="obitosAcc">Óbitos Acum</th>
                 </tr>
             </thead>
         </table>
@@ -250,9 +252,9 @@
             // if($('#municipio').val() != 'Todos') {
             //     hoje_municipios()
             // }
-            get_brasil_io($('#regiao').val(), $('#estado').val(), $('#municipio').val(),
-                          $('#hoje').prop('checked'), $('#hist').prop('checked'), $('#15d').prop('checked'), 
-                          $('#1mes').prop('checked'), $('#3mes').prop('checked'), $('#full').prop('checked'))
+            get_brasil_io($('#regiao option:selected').text(), $('#estado').val(), $('#municipio').val(),
+                          $('#hoje').prop('checked'), $('#15d').prop('checked'), 
+                          $('#1mes').prop('checked'), $('#3mes').prop('checked'))
         })
 
         // GERAR PDF

@@ -63,25 +63,65 @@ function hoje_municipios() { // Pega ultimos dados de cada municipio
     })
 }
 
-function get_brasil_io(regiao, estado, municipio, is_last, hist_15d, hist_1m, hist_3m, hist_full) { // Pega dados da API do Brasil IO ?search=&epidemiological_week=&date=&order_for_place=&state=CE&city=Cruz&city_ibge_code=&place_type=city&last_available_date=&is_last=False&is_repeated=
+function get_brasil_io(regiao, estado, municipio, is_last, hist_15d, hist_1m, hist_3m) { // Pega dados da API do Brasil IO ?search=&epidemiological_week=&date=&order_for_place=&state=CE&city=Cruz&city_ibge_code=&place_type=city&last_available_date=&is_last=False&is_repeated=
     var url = 'https://brasil.io/api/dataset/covid19/caso_full/data/?format=json'
-    if(!hist_full) {
-        if(regiao == 'Todas')
-            url += `&place_type=state`
-        if(estado != 'Todos') 
-            url += `&state=${estado}`
-        if(municipio != 'Todos') 
-            url += `&city=${municipio}&place_type=city`
-        if(is_last) 
-            url += '&is_last=True'
-    } else {
-        if (hist_15d) {
+    if(estado != 'Todos') 
+        url += `&state=${estado}`
+    if(municipio != 'Todos') 
+        url += `&city=${municipio}&place_type=city`
+    else
+        url += `&place_type=state`
 
-        } else if (hist_1m) {
-            
-        } else if (hist_3m) {
-            
-        }
+    if(is_last) {
+        url += '&is_last=True'
+        if(regiao == 'Todas')
+            req_brasil_io(url)
+        else
+            req_brasil_io(url, [], 0, regiao)
+    } else {
+        var qtd = 0
+        if (hist_15d)
+            qtd = 15
+        else if (hist_1m)
+            qtd = 30
+        else if (hist_3m)
+            qtd = 90
+        req_brasil_io(url, [], qtd)
     }
-    console.log(url)
+    // console.log(url)
+}
+
+function req_brasil_io(url, data=[], qtdDias=0, regiao='') {
+    var table = data
+    var datesUnique = []
+    $.ajax({
+        url: url, type: 'GET', dataType: 'json',
+        success: json => {
+            $.each(json['results'], (i, casos) => {
+                if((qtdDias == 0 || datesUnique.length < qtdDias) && // pega todos so registros ou apenas o limite especificado
+                   (regiao == '' || regiao == get_name_region(casos['state']))) { // pega todas as regioes ou apenas a especificada
+                    table.push({
+                        'regiao': get_name_region(casos['state']),
+                        'estado': get_name_state(casos['state']),
+                        'municipio': casos['city'],
+                        'semana': casos['epidemiological_week'],
+                        'data': date2java(casos['last_available_date']),
+                        'casos': casos['new_confirmed'],
+                        'casosAcc': casos['last_available_confirmed'],
+                        'obitos': casos['new_deaths'],
+                        'obitosAcc': casos['last_available_deaths']
+                    })
+                    if(datesUnique.indexOf(casos['last_available_date']) === -1)
+                        datesUnique.push(casos['last_available_date'])
+                }
+            })
+            if (json['next'] != null && (qtdDias == 0 || datesUnique.length < qtdDias)) {
+                // console.log('Chamou outra pagina')
+                req_brasil_io(json['next'], table)
+            } else {
+                $('#table').bootstrapTable({data: table}) // caso seja a primeira vez que a tabela seja povoada
+                $('#table').bootstrapTable('load', table)
+            }
+        }
+    })
 }

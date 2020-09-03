@@ -1,6 +1,6 @@
 // DEFINIÇÕES GLOBAIS
 const estados = {
-    'CO': ['Centro-Oeste', {'Goiás': 'GO', 'Mato Grosso': 'MT', 'Mato Grosso do Sul': 'MS'}],
+    'CO': ['Centro-Oeste', {'Distrito Federal': 'DF', 'Goiás': 'GO', 'Mato Grosso': 'MT', 'Mato Grosso do Sul': 'MS'}],
     'NE': ['Nordeste', {'Alagoas': 'AL', 'Bahia': 'BA', 'Ceará': 'CE', 'Maranhão': 'MA', 'Paraíba': 'PB', 'Pernambuco': 'PE', 'Piauí': 'PI', 'Rio Grande do Norte': 'RN', 'Sergipe': 'SE'}],
     'N': ['Norte', {'Acre': 'AC', 'Amapá': 'AP', 'Amazonas': 'AM', 'Pará': 'PA', 'Rondônia': 'RO', 'Roraima': 'RR', 'Tocantins': 'TO'}],
     'SE': ['Sudeste', {'Espírito Santo': 'ES', 'Minas Gerais': 'MG', 'Rio de Janeiro': 'RJ', 'São Paulo': 'SP'}],
@@ -70,4 +70,8 @@ function togglePagination() {
     $('#table').attr('data-page-list', `[10, ${!pag ? '25, 50, 100,' : ''} ALL]`)
     $('#table').bootstrapTable('refresh')
     $('#table').bootstrapTable('togglePagination')
+}
+
+function date2java(date) {
+    return date.slice(8, 10) + '/' + date.slice(5, 7) + '/' + date.slice(0, 4)
 }
