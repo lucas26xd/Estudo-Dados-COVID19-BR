@@ -74,10 +74,7 @@ function get_brasil_io(regiao, estado, municipio, is_last, hist_15d, hist_1m, hi
 
     if(is_last) {
         url += '&is_last=True'
-        if(regiao == 'Todas')
-            req_brasil_io(url)
-        else
-            req_brasil_io(url, [], 0, regiao)
+        req_brasil_io(url, [], 0, regiao)
     } else {
         var qtd = 0
         if (hist_15d)
@@ -86,20 +83,20 @@ function get_brasil_io(regiao, estado, municipio, is_last, hist_15d, hist_1m, hi
             qtd = 30
         else if (hist_3m)
             qtd = 90
-        req_brasil_io(url, [], qtd)
+        req_brasil_io(url, [], qtd, regiao)
     }
     // console.log(url)
 }
 
-function req_brasil_io(url, data=[], qtdDias=0, regiao='') {
+function req_brasil_io(url, data=[], qtdDias=0, regiao='Todas', datesU=[]) {
     var table = data
-    var datesUnique = []
+    var datesUnique = datesU
     $.ajax({
         url: url, type: 'GET', dataType: 'json',
         success: json => {
             $.each(json['results'], (i, casos) => {
                 if((qtdDias == 0 || datesUnique.length < qtdDias) && // pega todos so registros ou apenas o limite especificado
-                   (regiao == '' || regiao == get_name_region(casos['state']))) { // pega todas as regioes ou apenas a especificada
+                   (regiao == 'Todas' || regiao == get_name_region(casos['state']))) { // pega todas as regioes ou apenas a especificada
                     table.push({
                         'regiao': get_name_region(casos['state']),
                         'estado': get_name_state(casos['state']),
@@ -116,8 +113,8 @@ function req_brasil_io(url, data=[], qtdDias=0, regiao='') {
                 }
             })
             if (json['next'] != null && (qtdDias == 0 || datesUnique.length < qtdDias)) {
-                // console.log('Chamou outra pagina')
-                req_brasil_io(json['next'], table)
+                console.log('Chamou outra pagina')
+                req_brasil_io(json['next'], table, qtdDias, regiao, datesUnique)
             } else {
                 $('#table').bootstrapTable({data: table}) // caso seja a primeira vez que a tabela seja povoada
                 $('#table').bootstrapTable('load', table)
@@ -125,7 +122,7 @@ function req_brasil_io(url, data=[], qtdDias=0, regiao='') {
         }, 
         statusCode: {
             429: json => {
-                alert('Limite de tentativas excedido, tente novamente em ' + json['available_in'])
+                alert('Limite de tentativas excedido, tente novamente em alguns segundos') //+ json['available_in'])
             }
         }
     })
