@@ -99,8 +99,8 @@ function req_brasil_io(url, data=[], qtdDias=0, regiao='Todas', datesU=[]) {
                    (regiao == 'Todas' || regiao == get_name_region(casos['state']))) { // pega todas as regioes ou apenas a especificada
                     table.push({
                         'regiao': get_name_region(casos['state']),
-                        'estado': get_name_state(casos['state']),
-                        'municipio': casos['city'],
+                        'estado': removeAcento(get_name_state(casos['state'])),
+                        'municipio': removeAcento(casos['city']),
                         'semana': casos['epidemiological_week'],
                         'data': date2java(casos['last_available_date']),
                         'casos': casos['new_confirmed'],
