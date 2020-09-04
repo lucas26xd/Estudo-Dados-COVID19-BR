@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="author" content="Lucas Santos e Ângela Magalhães">
@@ -29,6 +29,7 @@
         <!-- <div class="col-sm-1"></div> -->
         <h1 class="col-sm-9 text-white">Dados do COVID-19 no Brasil</h1>
     </div>
+
     <!--PAINEL DE DADOS ATUALIZADOS-->    
     <div id="painel" class="m-2 row text-center">
         <div id="casos-recuperados" class="p-1 shadow bg-success rounded text-white col-md ml-1 mr-1">
@@ -44,6 +45,7 @@
             <h1 id="numero-obitos-confirmados"></h1>
         </div>
     </div>
+
     <!--OPÇÕES DE FILTRO POR ÁREA-->    
     <div id="local" class="m-2 shadow p-1 bg-white rounded">
         <div class="form-group row">
@@ -66,6 +68,7 @@
                 </select>
             </div>
         </div>
+
         <div class="form-group row">
             <div class="col-sm-6"></div>
             <label for="municipio" class="col-sm-1 col-form-label">Município:</label>
@@ -76,6 +79,7 @@
             </div>
         </div>
     </div>
+
     <!--OPÇÕES DE FILTRO POR PERÍODO-->
     <div id="periodo" class="m-2 shadow p-1 bg-white rounded">
         <div class="form-check ml-2 mb-2">
@@ -107,6 +111,7 @@
             </div>
         </div>
     </div>
+
     <!--BOTÕES CONSULTA E LIMPA CAMPOS-->    
     <div id="botoes" class="form-group row">
         <div class="col-sm-7"></div>
@@ -118,6 +123,7 @@
             <button id="consulta" class="btn btn-primary">Consultar</button>
         </div>
     </div>
+
     <!--EXIBIÇÃO DA TABELA DE DADOS-->
     <div id="tabela" class="m-2 shadow p-1 bg-white rounded">
         <table id="table"
@@ -146,25 +152,28 @@
             </thead>
         </table>
     </div>
+
     <!--BOTÕES DE EXPORTAÇÃO DA TABELA-->  
     <div id="exportacoes" class="form-group row">
-        <div class="col-1"></div>
+        <!--<div class="col-1"></div>-->
         <div class="col-3">
             <div id="editor"></div>
             <button id="baixarPDF" class="btn btn-danger" title="Exportar tabela para PDF.">Baixar PDF</button>
         </div>
         <div class="col-1"></div>
         <div class="col-3">
-            <button id="baixarXLS" class="btn btn-success" title="Exportar tabela para planilha Excel.">Baixar XLS</button>
+            <button id="baixarXLS" class="btn btn-success" title="Exportar tabela para planilha Excel.">Baixar XLSX</button>
         </div>
         <div class="col-1"></div>
         <div class="col-3">
             <button id="baixarCSV" class="btn btn-secondary" title="Exportar tabela para CSV.">Baixar CSV</button>
         </div>
-        <div class="col-1"></div>
+        <!--<div class="col-1"></div>-->
     </div>
+
     <!--RODAPÉ DO SITE-->    
     <footer class="text-center text-secondary">Baixe a última planilha de dados atualizados disponibilizada pelo DataSUS <a id="HOJE_LINK" title="Dados atuais em cada município brasileiro">aqui</a> ou baixe toda planilha do histórico <a id="HIST_LINK" title="Todos os dados em cada município brasileiro">aqui</a>.</footer>
+    
     <!--BIBLIOTECAS-->
     <!-- JQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -180,12 +189,11 @@
     <script type="text/javascript" src="libs/FileSaver/FileSaver.min.js"></script>
     <!-- EXCEL -->
     <script type="text/javascript" src="libs/js-xlsx/xlsx.core.min.js"></script>
+    <!--jsPDF-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
     <!-- PDF -->
     <script type="text/javascript" src="libs/jsPDF/jspdf.min.js"></script>
     <script type="text/javascript" src="libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
-
-    <!--jsPDF-->
-    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script> -->
     <!-- Utils -->
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript" src="reqs.js"></script>
@@ -262,23 +270,24 @@
         })
 
         // GERAR PDF
-        // var doc = new jsPDF("portrait", "mm", [510, 497])
+        
+        //var doc = new jsPDF("portrait", "mm", [510, 497])
            
-        // var specialElementHandlers = {
+        //var specialElementHandlers = {
         //     '#editor': function (element, renderer) {
         //         return true
         //     }
-        // }
+        //}
 
-        // $('#gerapdf').click(function () {
-        //     doc.fromHTML($('#tabela').html(), 15, 15, {
+        //$('#baixarPDF').click(function() {
+        //    doc.fromHTML($('#tabela').html(), 15, 15, {
         //         'width': 170,
         //         'elementHandlers': specialElementHandlers
-        //     })
-        //     doc.save('planilha-covid19.pdf');
-        // })
+        //    })
+        //    doc.save('planilha-covid19.pdf');
+        //}) 
 
-        $('#baixarPDF').click(() => {
+        //$('#baixarPDF').click(() => {
             // $('#table').tableExport({ type:'pdf',
             //                         jspdf: {orientation: 'l',
             //                                 format: 'a3',
@@ -288,22 +297,28 @@
             //                                             tableWidth: 'auto'}
             //                         }
             //                         })
-            $('#table').tableExport({fileName:'Arquivo', type:'pdf',
-                                     jspdf: {orientation: 'p',
-                                             margins: {left:20, top:10},
-                                             autotable: false}
-                                    })
+        //    $('#table').tableExport({fileName:'Arquivo', type:'pdf',
+        //                             jspdf: {orientation: 'p',
+        //                                     margins: {left:20, top:10},
+        //                                     autotable: false}
+        //                            })
+        //})
+
+        $('#baixarPDF').click(() => {
+            togglePagination()
+            $('#table').tableExport({fileName:'PlanilhaCovid', type:'pdf'})
+            togglePagination()
         })
 
         $('#baixarXLS').click(() => {
             togglePagination()
-            $('#table').tableExport({fileName:'Planilha', worksheetName: 'Dados', type:'excel', mso:{fileFormat:'xlsx'}})
+            $('#table').tableExport({fileName:'PlanilhaCovid', worksheetName: 'Dados', type:'excel', mso:{fileFormat:'xlsx'}})
             togglePagination()
         })
 
         $('#baixarCSV').click(() => {
             togglePagination()
-            $('#table').tableExport({fileName:'Tabela', type:'csv'})
+            $('#table').tableExport({fileName:'TabelaCovid', type:'csv'})
             togglePagination()
         })
     </script>
