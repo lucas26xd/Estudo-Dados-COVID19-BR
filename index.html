@@ -11,8 +11,6 @@
     <meta name="keywords" content="Coronavírus, COVID-19, Dados, API">
     <link rel="icon" type="image/x-icon" class="favicon" href="https://covid.saude.gov.br/assets/imgs/Favicon.png">
     <title>Dados do COVID-19 no Brasil</title>
-    <!--Material Icons-->
-    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/3.6.95/css/materialdesignicons.min.css" />
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css">
@@ -24,23 +22,23 @@
     <!--CABEÇALHO DO SITE-->
     <div id="titulo" class="m-2 shadow p-1 bg-primary rounded row text-center">
         <a href="https://opendatasus.saude.gov.br/dataset"  class="col-sm-2" target="_blank" rel="noopener noreferrer">
-            <img src="https://opendatasus.saude.gov.br/uploads/admin/2020-05-14-142452.811052Logo-OpenDataSUS-155x55px.png" alt="Open Data" title="Open Data">
+            <img src="https://opendatasus.saude.gov.br/uploads/admin/2020-05-14-142452.811052Logo-OpenDataSUS-155x55px.png" alt="Open Data" title="Open Data SUS">
         </a>
         <!-- <div class="col-sm-1"></div> -->
-        <h1 class="col-sm-9 text-white">Dados do COVID-19 no Brasil</h1>
+        <h1 class="col-sm-9 text-white" title="Dados do COVID-19 no Brasil">Dados do COVID-19 no Brasil</h1>
     </div>
 
     <!--PAINEL DE DADOS ATUALIZADOS-->    
     <div id="painel" class="m-2 row text-center">
-        <div id="casos-recuperados" class="p-1 shadow bg-success rounded text-white col-md ml-1 mr-1">
+        <div id="casos-recuperados" class="p-1 shadow bg-success rounded text-white col-md ml-1 mr-1" title="Casos Recuperados">
             <h3>Casos Recuperados</h3>
             <h1 id="numero-casos-recuperados"></h1>
         </div>
-        <div id="casos-confirmados" class="p-1 shadow bg-info rounded text-white col-md ml-1 mr-1">
+        <div id="casos-confirmados" class="p-1 shadow bg-info rounded text-white col-md ml-1 mr-1" title="Casos Confirmados">
             <h3>Casos Confirmados</h3>
             <h1 id="numero-casos-confirmados"></h1>
         </div>
-        <div id="obitos-confirmados" class="p-1 shadow bg-dark rounded text-white col-md ml-1 mr-1">
+        <div id="obitos-confirmados" class="p-1 shadow bg-dark rounded text-white col-md ml-1 mr-1" title="Óbitos Confirmados">
             <h3>Óbitos Confirmados</h3>
             <h1 id="numero-obitos-confirmados"></h1>
         </div>
@@ -50,7 +48,7 @@
     <div id="local" class="m-2 shadow p-1 bg-white rounded">
         <div class="form-group row">
             <label for="regiao" class="col-sm-1 col-form-label">Região:</label>
-            <div class="col-sm-5">
+            <div class="col-sm-5" title="Selecione a região">
                 <select id="regiao" class="form-control selectpicker" data-live-search="true" data-live-search-placeholder="Procurar...">
                     <option value="Todas">Todas</option>
                     <option value="CO">Centro-Oeste</option>
@@ -62,7 +60,7 @@
             </div>
 
             <label for="estado" class="col-sm-1 col-form-label">Estado:</label>
-            <div class="col-sm-5">
+            <div class="col-sm-5" title="Selecione o estado">
                 <select id="estado" class="form-control selectpicker" data-live-search="true" data-live-search-placeholder="Procurar...">
                     <option value="Todos">Todos</option>
                 </select>
@@ -72,7 +70,7 @@
         <div class="form-group row">
             <div class="col-sm-6"></div>
             <label for="municipio" class="col-sm-1 col-form-label">Município:</label>
-            <div class="col-sm-5">
+            <div class="col-sm-5" title="Selecione o município">
                 <select id="municipio" class="form-control selectpicker" data-live-search="true" data-live-search-placeholder="Procurar...">
                     <option value="Todos">Todos</option>
                 </select>
@@ -84,29 +82,29 @@
     <div id="periodo" class="m-2 shadow p-1 bg-white rounded">
         <div class="form-check ml-2 mb-2">
             <input class="form-check-input" type="radio" name="periodo" id="hoje" value="hoje" checked>
-            <label class="form-check-label" for="hoje">Última atualização: <span id="last_update" class="text-success"></span>.</label>
+            <label class="form-check-label" for="hoje" title="Última atualização">Última atualização: <span id="last_update" class="text-success"></span>.</label>
         </div>
         <div class="row ml-2 mb-2">
             <div class="form-check col-sm-2">
                 <input class="form-check-input" type="radio" name="periodo" id="hist" value="hist">
-                <label class="form-check-label" for="hist">Histórico:</label>
+                <label class="form-check-label" for="hist" title="Histórico">Histórico:</label>
             </div>
             <div id="historico" class="row col-sm-10 border">
                 <div class="form-check ml-2 col-sm-3">
                     <input class="form-check-input" type="radio" name="hist" id="15d" value="15d" checked>
-                    <label class="form-check-label" for="15d">Últimos 15 dias</label>
+                    <label class="form-check-label" for="15d" title="Últimos 15 dias">Últimos 15 dias</label>
                 </div>
                 <div class="form-check ml-2 col-sm-3">
                     <input class="form-check-input" type="radio" name="hist" id="1mes" value="1mes">
-                    <label class="form-check-label" for="1mes">Último mês</label>
+                    <label class="form-check-label" for="1mes" title="Último mês">Último mês</label>
                 </div>
                 <div class="form-check ml-2 col-sm-3">
                     <input class="form-check-input" type="radio" name="hist" id="3mes" value="3mes">
-                    <label class="form-check-label" for="3mes">Últimos 3 meses</label>
+                    <label class="form-check-label" for="3mes" title="Últimos 3 meses">Últimos 3 meses</label>
                 </div>
                 <div class="form-check ml-2 col-sm-1">
                     <input class="form-check-input" type="radio" name="hist" id="full" value="full">
-                    <label class="form-check-label" for="full">Completo</label>
+                    <label class="form-check-label" for="full" title="Completo">Completo</label>
                 </div>
             </div>
         </div>
@@ -116,11 +114,11 @@
     <div id="botoes" class="form-group row">
         <div class="col-sm-7"></div>
         <div class="col-sm-1">
-            <button id="limpa" class="btn btn-danger">Limpar</button>
+            <button id="limpa" class="btn btn-danger" title="Limpar campos de filtragem">Limpar</button>
         </div>
         <div class="col-sm-1"></div>
         <div class="col-sm-1">
-            <button id="consulta" class="btn btn-primary">Consultar</button>
+            <button id="consulta" class="btn btn-primary" title="Consultar">Consultar</button>
         </div>
     </div>
 
@@ -183,17 +181,14 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.17.1/bootstrap-table.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table-locale-all.min.js"></script>
-
+    <script type="text/javascript" src="https://unpkg.com/bootstrap-table@1.17.1/src/locale/bootstrap-table-pt-BR.js"></script>
     <!-- Salvar tabela -->
-    <script type="text/javascript" src="libs/FileSaver/FileSaver.min.js"></script>
+    <script type="text/javascript" src="libs/FileSaver.min.js"></script>
     <!-- EXCEL -->
-    <script type="text/javascript" src="libs/js-xlsx/xlsx.core.min.js"></script>
-    <!--jsPDF-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
+    <script type="text/javascript" src="libs/xlsx.core.min.js"></script>
     <!-- PDF -->
-    <script type="text/javascript" src="libs/jsPDF/jspdf.min.js"></script>
-    <script type="text/javascript" src="libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+    <script type="text/javascript" src="libs/jspdf.min.js"></script>
+    <script type="text/javascript" src="libs/jspdf.plugin.autotable.js"></script>
     <!-- Utils -->
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript" src="reqs.js"></script>
@@ -261,48 +256,10 @@
         })
 
         $('#consulta').click(() => {
-            // if($('#municipio').val() != 'Todos') {
-            //     hoje_municipios()
-            // }
             get_brasil_io($('#regiao option:selected').text(), $('#estado').val(), $('#municipio').val(),
                           $('#hoje').prop('checked'), $('#15d').prop('checked'), 
                           $('#1mes').prop('checked'), $('#3mes').prop('checked'))
         })
-
-        // GERAR PDF
-        
-        //var doc = new jsPDF("portrait", "mm", [510, 497])
-           
-        //var specialElementHandlers = {
-        //     '#editor': function (element, renderer) {
-        //         return true
-        //     }
-        //}
-
-        //$('#baixarPDF').click(function() {
-        //    doc.fromHTML($('#tabela').html(), 15, 15, {
-        //         'width': 170,
-        //         'elementHandlers': specialElementHandlers
-        //    })
-        //    doc.save('planilha-covid19.pdf');
-        //}) 
-
-        //$('#baixarPDF').click(() => {
-            // $('#table').tableExport({ type:'pdf',
-            //                         jspdf: {orientation: 'l',
-            //                                 format: 'a3',
-            //                                 margins: {left:10, right:10, top:20, bottom:20},
-            //                                 autotable: {styles: {fillColor: 'inherit', 
-            //                                                      textColor: 'inherit'},
-            //                                             tableWidth: 'auto'}
-            //                         }
-            //                         })
-        //    $('#table').tableExport({fileName:'Arquivo', type:'pdf',
-        //                             jspdf: {orientation: 'p',
-        //                                     margins: {left:20, top:10},
-        //                                     autotable: false}
-        //                            })
-        //})
 
         $('#baixarPDF').click(() => {
             togglePagination()

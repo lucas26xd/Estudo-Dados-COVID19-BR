@@ -76,6 +76,8 @@ function date2java(date) {
     return date.slice(8, 10) + '/' + date.slice(5, 7) + '/' + date.slice(0, 4)
 }
 
-function removeAcento(string) {
-    return string.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+function removeAcento(str) {
+    if(str)
+        return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    return ''
 }
