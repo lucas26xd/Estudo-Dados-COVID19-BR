@@ -12,7 +12,7 @@ function planilha_hoje() { // Pega números gerais e link da planilha HOJE
         type:'GET', dataType: 'json',
         success: json => {
             $('#HOJE_LINK').attr('href', json['planilha']['arquivo']['url'])
-            $('#numero-casos-recuperados').text(mask(json['confirmados']['recuperados']))
+            // $('#numero-casos-recuperados').text(mask(json['confirmados']['recuperados']))
             $('#numero-casos-confirmados').text(mask(json['confirmados']['total']))
             $('#numero-obitos-confirmados').text(mask(json['obitos']['total']))
         }

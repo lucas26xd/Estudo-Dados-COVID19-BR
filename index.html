@@ -20,20 +20,18 @@
 
 <body>
     <!--CABEÇALHO DO SITE-->
-    <div id="titulo" class="m-2 shadow p-1 bg-primary rounded row text-center">
-        <a href="https://opendatasus.saude.gov.br/dataset"  class="col-sm-2" target="_blank" rel="noopener noreferrer">
-            <img src="https://opendatasus.saude.gov.br/uploads/admin/2020-05-14-142452.811052Logo-OpenDataSUS-155x55px.png" alt="Open Data" title="Open Data SUS">
-        </a>
-        <!-- <div class="col-sm-1"></div> -->
-        <h1 class="col-sm-9 text-white" title="Dados do COVID-19 no Brasil">Dados do COVID-19 no Brasil</h1>
+    <div id="titulo" class="m-2 shadow p-1 bg-primary rounded">
+        <div class="row text-center">
+            <h1 class="col-md text-white" title="Dados do COVID-19 no Brasil">Dados do COVID-19 no Brasil</h1>
+        </div>
+        <hr>
+        <div class="ml-2 row">
+            <h6 class="col-md text-black" style="font-size: 90%">Produto acadêmico para contrinuir no enfretamento do COVID-19. Desenvolvido por Lucas Santos e Ângela Magalhães, estudantes do curso de Engenharia de Computação (UFC), durante seu período como alunos da disciplina de Economia e Sociedade do Curso de Economia (UFC) sob orientação do Prof. Daniel Lavor.</h6>
+        </div>
     </div>
 
     <!--PAINEL DE DADOS ATUALIZADOS-->    
     <div id="painel" class="m-2 row text-center">
-        <div id="casos-recuperados" class="p-1 shadow bg-success rounded text-white col-md ml-1 mr-1" title="Casos Recuperados">
-            <h3>Casos Recuperados</h3>
-            <h1 id="numero-casos-recuperados"></h1>
-        </div>
         <div id="casos-confirmados" class="p-1 shadow bg-info rounded text-white col-md ml-1 mr-1" title="Casos Confirmados">
             <h3>Casos Confirmados</h3>
             <h1 id="numero-casos-confirmados"></h1>
