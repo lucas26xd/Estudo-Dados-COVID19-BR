@@ -89,20 +89,30 @@
             </div>
             <div id="historico" class="row col-sm-10 border">
                 <div class="form-check ml-2 col-sm-3">
-                    <input class="form-check-input" type="radio" name="hist" id="15d" value="15d" checked>
+                    <input class="form-check-input" type="radio" name="hist" id="interval" value="interval" checked>
+                    <label class="form-check-label" for="interval" title="Intervalo entre datas">Período</label>
+                </div>
+                <div class="form-check ml-2 col-sm-3">
+                    <input class="form-check-input" type="radio" name="hist" id="15d" value="15d">
                     <label class="form-check-label" for="15d" title="Últimos 15 dias">Últimos 15 dias</label>
                 </div>
                 <div class="form-check ml-2 col-sm-3">
                     <input class="form-check-input" type="radio" name="hist" id="1mes" value="1mes">
                     <label class="form-check-label" for="1mes" title="Último mês">Último mês</label>
                 </div>
-                <div class="form-check ml-2 col-sm-3">
-                    <input class="form-check-input" type="radio" name="hist" id="3mes" value="3mes">
-                    <label class="form-check-label" for="3mes" title="Últimos 3 meses">Últimos 3 meses</label>
-                </div>
                 <div class="form-check ml-2 col-sm-1">
                     <input class="form-check-input" type="radio" name="hist" id="full" value="full">
                     <label class="form-check-label" for="full" title="Completo">Completo</label>
+                </div>
+            </div>
+            <div id="intervaloDatas" class="form-group mt-2 ml-2 row col-sm-12">
+                <label for="dateIni" class="col-sm-2 col-form-label">Data Inicial:</label>
+                <div class="col-sm-4">
+                  <input class="form-control" type="date" id="dateIni" title="Data inicial">
+                </div>
+                <label for="dateEnd" class="col-sm-2 col-form-label">Data Final:</label>
+                <div class="col-sm-4">
+                  <input class="form-control" type="date" id="dateEnd" title="Data final" value="2020-09-21">
                 </div>
             </div>
         </div>
@@ -139,7 +149,7 @@
                     <th data-sortable="true" data-field="estado">Estado</th>
                     <th data-sortable="true" data-field="municipio">Municipio</th>
                     <th data-sortable="true" data-field="semana">Semana</th>
-                    <th data-sortable="true" data-field="data">Data</th>
+                    <th data-sortable="true" data-field="data" data-sorter="datesSorter">Data</th>
                     <th data-sortable="true" data-field="casos">Casos Novos</th>
                     <th data-sortable="true" data-field="casosAcc">Casos Acum</th>
                     <th data-sortable="true" data-field="obitos">Obitos Novos</th>
@@ -197,15 +207,21 @@
         $('#estado').selectpicker('refresh')
         $('#municipio').prop('disabled', true)
         $('#municipio').selectpicker('refresh')
+        $('#intervaloDatas').hide()
         $('#historico').hide()
+
+        var dateAtual = new Date()
+        $('#dateEnd').attr('value', dateAtual.toLocaleDateString().split("/").reverse().join("-"))
+        dateAtual.setDate(dateAtual.getDate() - 7) // uma semana anterior
+        $('#dateIni').attr('value', dateAtual.toLocaleDateString().split("/").reverse().join("-"))
 
         // REQUISIÇÕES
         // hist_estado()
         planilha_hoje()
         planilha_hist()
         get_brasil_io($('#regiao option:selected').text(), $('#estado').val(), $('#municipio').val(),
-                          $('#hoje').prop('checked'), $('#15d').prop('checked'), 
-                          $('#1mes').prop('checked'), $('#3mes').prop('checked'))
+                          $('#hoje').prop('checked'), $('#15d').prop('checked'), $('#1mes').prop('checked'),
+                          $('#interval').prop('checked'), $('#dateIni')[0].value, $('#dateEnd')[0].value)
 
         // EVENTOS
         $('#regiao').change(() => {    
@@ -236,10 +252,27 @@
             $('#municipio').selectpicker('refresh')
         })
 
-        $('#hoje').change(() => {$('#historico').hide()})
-        $('#hist').change(() => {$('#historico').show()})
+        $('#hoje').change(() => {
+            $('#historico').hide()
+            $('#intervaloDatas').hide()
+        })
+
+        $('#hist').change(() => {
+            $('#historico').show()
+            if($('#interval').prop('checked'))
+                $('#intervaloDatas').show()
+            else
+                $('#intervaloDatas').hide()
+        })
+
+        $('#interval').change(() => {$('#intervaloDatas').show()})
+        $('#15d').change(() => {$('#intervaloDatas').hide()})
+        $('#1mes').change(() => {$('#intervaloDatas').hide()})
+        $('#full').change(() => {$('#intervaloDatas').hide()})
 
         $('#limpa').click(() => {
+            $('#dateIni')[0]
+            $('#intervaloDatas').hide()
             $('#historico').hide()
             $('#hoje').prop('checked', true)
             $('#estado').empty()
@@ -255,8 +288,8 @@
 
         $('#consulta').click(() => {
             get_brasil_io($('#regiao option:selected').text(), $('#estado').val(), $('#municipio').val(),
-                          $('#hoje').prop('checked'), $('#15d').prop('checked'), 
-                          $('#1mes').prop('checked'), $('#3mes').prop('checked'))
+                          $('#hoje').prop('checked'), $('#15d').prop('checked'), $('#1mes').prop('checked'),
+                          $('#interval').prop('checked'), $('#dateIni')[0].value, $('#dateEnd')[0].value)
         })
 
         $('#baixarPDF').click(() => {

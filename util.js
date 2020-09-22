@@ -81,3 +81,22 @@ function removeAcento(str) {
         return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     return ''
 }
+
+function datesSorter(a, b) {
+    a = a.split("/")
+    b = b.split("/")
+
+    if (new Date(a[2], a[1] - 1, a[0]) < new Date(b[2], b[1] - 1, b[0])) 
+        return 1
+    if (new Date(a[2], a[1] - 1, a[0]) > new Date(b[2], b[1] - 1, b[0])) 
+        return -1
+    return 0
+}
+
+function str2date(date, c) {
+    date = date.split(c)
+    date = new Date(date[0], date[1] - 1, date[2])
+    if (c == '/')
+        date = new Date(date[2], date[1] - 1, date[0])
+    return date
+}
