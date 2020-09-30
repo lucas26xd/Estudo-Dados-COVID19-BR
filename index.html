@@ -72,8 +72,9 @@
             <div class="col-sm-6"></div>
             <label for="municipio" class="col-sm-1 col-form-label">Município:</label>
             <div class="col-sm-5" title="Selecione o município">
-                <select id="municipio" class="form-control selectpicker" data-live-search="true" data-live-search-placeholder="Procurar...">
-                    <option value="Todos">Todos</option>
+                <select id="municipio" class="form-control selectpicker" multiple 
+                data-live-search="true" data-live-search-placeholder="Procurar..." 
+                data-actions-box="true" data-lang="pt-BR" title="Selecione o município">
                 </select>
             </div>
         </div>
@@ -84,34 +85,34 @@
         <div class="alert alert-primary" role="alert">
             Opções de Busca por Período
         </div>
-        <div class="form-check ml-2 mb-2">
+        <!-- <div class="form-check ml-2 mb-2">
             <input class="form-check-input" type="radio" name="periodo" id="hoje" value="hoje" checked>
             <label class="form-check-label" for="hoje" title="Última atualização">Última atualização: <span id="last_update" class="text-success"></span>.</label>
-        </div>
-        <div class="row ml-2 mb-2">
-            <div class="form-check col-sm-2">
+        </div> -->
+        <div class="row ml-2 mb-3">
+            <!-- <div class="form-check col-sm-2">
                 <input class="form-check-input" type="radio" name="periodo" id="hist" value="hist">
                 <label class="form-check-label" for="hist" title="Histórico">Histórico:</label>
-            </div>
-            <div id="historico" class="row col-sm-10 border">
-                <div class="form-check ml-2 col-sm-3">
-                    <input class="form-check-input" type="radio" name="hist" id="interval" value="interval" checked>
-                    <label class="form-check-label" for="interval" title="Intervalo entre datas">Período</label>
+            </div> -->
+            <!-- <div id="historico" class="row col-12"> -->
+                <div class="form-check form-check-inline ml-2 col-2">
+                    <input class="form-check-input" type="radio" name="hist" id="7d" value="7d" checked>
+                    <label class="form-check-label" for="7d" title="Última semana">Última semana</label>
                 </div>
-                <div class="form-check ml-2 col-sm-3">
+                <div class="form-check form-check-inline ml-2 col-2">
                     <input class="form-check-input" type="radio" name="hist" id="15d" value="15d">
                     <label class="form-check-label" for="15d" title="Últimos 15 dias">Últimos 15 dias</label>
                 </div>
-                <div class="form-check ml-2 col-sm-3">
+                <div class="form-check form-check-inline ml-2 col-2">
                     <input class="form-check-input" type="radio" name="hist" id="1mes" value="1mes">
                     <label class="form-check-label" for="1mes" title="Último mês">Último mês</label>
                 </div>
-                <div class="form-check ml-2 col-sm-1">
+                <div class="form-check form-check-inline ml-2 col-2">
                     <input class="form-check-input" type="radio" name="hist" id="full" value="full">
                     <label class="form-check-label" for="full" title="Completo">Completo</label>
                 </div>
-            </div>
-            <div id="intervaloDatas" class="form-group mt-2 ml-2 row col-sm-12">
+            <!-- </div> -->
+            <div id="intervaloDatas" class="form-group mt-4 ml-2 row col-sm-12">
                 <label for="dateIni" class="col-sm-2 col-form-label">Data Inicial:</label>
                 <div class="col-sm-4">
                   <input class="form-control" type="date" id="dateIni" title="Data inicial">
@@ -210,23 +211,25 @@
         //INICIALIZAÇÕES
         $('#estado').prop('disabled', true)
         $('#estado').selectpicker('refresh')
-        $('#municipio').prop('disabled', true)
+        $('#municipio').prop('disabled', true)      
+        $('#municipio').selectpicker({
+            noneSelectedText: 'Nada selecionado',
+            noneResultsText: 'Nada encontrado contendo {0}',
+            countSelectedText: 'Selecionado {0} de {1}',
+            maxOptionsText: ['Limite excedido (máx. {n} {var})', 'Limite do grupo excedido (máx. {n} {var})', ['itens', 'item']],
+            multipleSeparator: ', ',
+            selectAllText: 'Selecionar Todos',
+            deselectAllText: 'Desmarcar Todos'
+        })
         $('#municipio').selectpicker('refresh')
-        $('#intervaloDatas').hide()
-        $('#historico').hide()
 
-        var dateAtual = new Date()
-        $('#dateEnd').attr('value', dateAtual.toLocaleDateString().split("/").reverse().join("-"))
-        dateAtual.setDate(dateAtual.getDate() - 7) // uma semana anterior
-        $('#dateIni').attr('value', dateAtual.toLocaleDateString().split("/").reverse().join("-"))
+        setIntervalDate(7) // ultima semana
 
         // REQUISIÇÕES
-        // hist_estado()
         planilha_hoje()
         planilha_hist()
-        get_brasil_io($('#regiao option:selected').text(), $('#estado').val(), $('#municipio').val(),
-                          $('#hoje').prop('checked'), $('#15d').prop('checked'), $('#1mes').prop('checked'),
-                          $('#interval').prop('checked'), $('#dateIni')[0].value, $('#dateEnd')[0].value)
+        get_brasil_io($('#regiao option:selected').text(), $('#estado').val(), $('#municipio').val(), 
+                        $('#full').prop('checked'), $('#dateIni')[0].value, $('#dateEnd')[0].value)
 
         // EVENTOS
         $('#regiao').change(() => {    
@@ -248,7 +251,6 @@
 
         $('#estado').change(() => {
             $('#municipio').empty()
-            $('#municipio').append(new Option('Todos', 'Todos'))
             $('#municipio').prop('disabled', true)
             if($('#estado').val() != 'Todos') {
                 $('#municipio').prop('disabled', false)
@@ -257,44 +259,32 @@
             $('#municipio').selectpicker('refresh')
         })
 
-        $('#hoje').change(() => {
-            $('#historico').hide()
-            $('#intervaloDatas').hide()
-        })
-
-        $('#hist').change(() => {
-            $('#historico').show()
-            if($('#interval').prop('checked'))
-                $('#intervaloDatas').show()
-            else
-                $('#intervaloDatas').hide()
-        })
-
-        $('#interval').change(() => {$('#intervaloDatas').show()})
-        $('#15d').change(() => {$('#intervaloDatas').hide()})
-        $('#1mes').change(() => {$('#intervaloDatas').hide()})
+        $('#7d').change(() => {setIntervalDate(7)})
+        $('#15d').change(() => {setIntervalDate(15)})
+        $('#1mes').change(() => {setIntervalDate(30)})
         $('#full').change(() => {$('#intervaloDatas').hide()})
 
         $('#limpa').click(() => {
-            $('#dateIni')[0]
-            $('#intervaloDatas').hide()
-            $('#historico').hide()
-            $('#hoje').prop('checked', true)
+            setIntervalDate(7)
+            $('#7d').prop('checked', true)
+
             $('#estado').empty()
             $('#estado').append(new Option('Todos', 'Todos'))
             $('#estado').prop('disabled', true)
             $('#estado').selectpicker('refresh')
+
             $('#municipio').empty()
             $('#municipio').append(new Option('Todos', 'Todos'))
             $('#municipio').prop('disabled', true)
             $('#municipio').selectpicker('refresh')
+
             $("#regiao").val('Todas')
+            $('#regiao').selectpicker('refresh')
         })
 
         $('#consulta').click(() => {
-            get_brasil_io($('#regiao option:selected').text(), $('#estado').val(), $('#municipio').val(),
-                          $('#hoje').prop('checked'), $('#15d').prop('checked'), $('#1mes').prop('checked'),
-                          $('#interval').prop('checked'), $('#dateIni')[0].value, $('#dateEnd')[0].value)
+            get_brasil_io($('#regiao option:selected').text(), $('#estado').val(), $('#municipio').val(), 
+                        $('#full').prop('checked'), $('#dateIni')[0].value, $('#dateEnd')[0].value)
         })
 
         $('#baixarPDF').click(() => {

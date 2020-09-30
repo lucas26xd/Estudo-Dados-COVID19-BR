@@ -100,3 +100,12 @@ function str2date(date, c) {
         date = new Date(date[2], date[1] - 1, date[0])
     return date
 }
+
+function setIntervalDate(interval) {
+    var dateAtual = new Date()
+    $('#dateEnd').attr('value', dateAtual.toLocaleDateString().split("/").reverse().join("-"))
+    dateAtual.setDate(dateAtual.getDate() - interval) // última semana
+    $('#dateIni').attr('value', dateAtual.toLocaleDateString().split("/").reverse().join("-"))
+    
+    $('#intervaloDatas').show()
+}

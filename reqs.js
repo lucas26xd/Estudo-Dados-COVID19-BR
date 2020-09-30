@@ -25,7 +25,7 @@ function planilha_hist() { // Pega ultima atualização e link da planilha HIST
         type:'GET', dataType: 'json', headers: {'X-Parse-Application-Id': 'unAFkcaNDeXajurGB7LChj8SgQYS2ptm'},
         success: json => {
             $('#HIST_LINK').attr('href', json['results'][0]['arquivo']['url'])
-            $('#last_update').text(json['results'][0]['dt_atualizacao'])
+            // $('#last_update').text(json['results'][0]['dt_atualizacao'])
         }
     })
 }
@@ -63,48 +63,39 @@ function hoje_municipios() { // Pega ultimos dados de cada municipio
     })
 }
 
-function get_brasil_io(regiao, estado, municipio, is_last, hist_15d, hist_1m, periodo, dtIni, dtEnd) { // Pega dados da API do Brasil IO ?search=&epidemiological_week=&date=&order_for_place=&state=CE&city=Cruz&city_ibge_code=&place_type=city&last_available_date=&is_last=False&is_repeated=
+function get_brasil_io(regiao, estado, municipio, full, dtIni, dtEnd) { // Pega dados da API do Brasil IO ?search=&epidemiological_week=&date=&order_for_place=&state=CE&city=Cruz&city_ibge_code=&place_type=city&last_available_date=&is_last=False&is_repeated=
     $('#table').bootstrapTable({data: []}) // caso seja a primeira vez que a tabela seja povoada
     var url = 'https://brasil.io/api/dataset/covid19/caso_full/data/?format=json'
-    if(estado != 'Todos') 
+    var municipio_list = []
+    if(estado != 'Todos') {
         url += `&state=${estado}&place_type=city`
-    if(municipio != 'Todos') 
-        url += `&city=${municipio}&place_type=city`
-    else if(estado == 'Todos') 
+        if(municipio.length == 1)
+            url += `&city=${municipio}`
+        else
+            municipio_list = municipio
+    } else
         url += '&place_type=state'
 
-    if(is_last) {
-        url += '&is_last=True'
-        req_brasil_io(url, [], 0, regiao)
-    } else {
-        var qtd = 0
-        if (periodo) {
-            dtIni = str2date(dtIni, dtIni.includes('/') ? '/' : '-')
-            dtEnd = str2date(dtEnd, dtEnd.includes('/') ? '/' : '-')
-            req_brasil_io(url, [], qtd, regiao, [], dtIni, dtEnd)
-        } else {
-            if (hist_15d)
-                qtd = 15
-            else if (hist_1m)
-                qtd = 30
-            req_brasil_io(url, [], qtd, regiao)
-        }
-    }
-    // console.log(url)
+    if (!full) {
+        dtIni = str2date(dtIni, dtIni.includes('/') ? '/' : '-')
+        dtEnd = str2date(dtEnd, dtEnd.includes('/') ? '/' : '-')
+        req_brasil_io(url, regiao, municipio_list, dtIni, dtEnd)
+    } else
+        req_brasil_io(url, regiao, municipio_list)
 }
 
-function req_brasil_io(url, data=[], qtdDias=0, regiao='Todas', datesU=[], dateIni='', dateEnd='') {
+function req_brasil_io(url, regiao='Todas', municipio_list=[], dateIni='', dateEnd='', data=[]) {
     var table = data
-    var datesUnique = datesU
     $.ajax({
         url: url, type: 'GET', dataType: 'json',
         success: json => {
+            var dateLinha = new Date()
             json['results'].forEach(casos => {
-                var dateLinha = date2java(casos['last_available_date']).split("/")
+                dateLinha = date2java(casos['last_available_date']).split("/")
                 dateLinha = new Date(dateLinha[2], dateLinha[1] - 1, dateLinha[0])
-                if((qtdDias == 0 || datesUnique.length < qtdDias) && // pega todos so registros ou apenas o limite especificado
-                   (regiao == 'Todas' || regiao == get_name_region(casos['state'])) && // pega todas as regioes ou apenas a especificada
-                   ((dateIni == '' && dateEnd == '') || (dateLinha <= dateEnd && dateLinha >= dateIni))) { // pega apenas linhas detro do intervalo de datas
+                if((regiao == 'Todas' || regiao == get_name_region(casos['state'])) && // pega todas as regioes ou apenas a especificada
+                   ((dateIni == '' && dateEnd == '') || (dateLinha <= dateEnd && dateLinha >= dateIni)) && // pega apenas linhas detro do intervalo de datas
+                   (municipio_list.length == 0 || municipio_list.includes(casos['city']))) { // pega todos ou apenas um conjuto de municipios
                     table.push({
                         'regiao': get_name_region(casos['state']),
                         'estado': removeAcento(get_name_state(casos['state'])),
@@ -116,13 +107,13 @@ function req_brasil_io(url, data=[], qtdDias=0, regiao='Todas', datesU=[], dateI
                         'obitos': casos['new_deaths'],
                         'obitosAcc': casos['last_available_deaths']
                     })
-                    if(datesUnique.indexOf(casos['last_available_date']) === -1)
-                        datesUnique.push(casos['last_available_date'])
+                    // if(datesUnique.indexOf(casos['last_available_date']) === -1)
+                    //     datesUnique.push(casos['last_available_date'])
                 }
             })
-            if (json['next'] != null && (qtdDias == 0 || datesUnique.length < qtdDias)) {
+            if (json['next'] != null && ((dateIni == '' && dateEnd == '') || (dateLinha <= dateEnd || dateLinha >= dateIni))) {
                 console.log('Chamou outra página')
-                req_brasil_io(json['next'], table, qtdDias, regiao, datesUnique, dateIni, dateEnd)
+                req_brasil_io(json['next'], regiao, municipio_list, dateIni, dateEnd, table)
             } else {
                 $('#table').bootstrapTable('load', table)
             }
