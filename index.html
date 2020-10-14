@@ -21,12 +21,31 @@
 <body>
     <!--CABEÇALHO DO SITE-->
     <div id="titulo" class="m-2 shadow p-1 bg-primary rounded">
-        <div class="row text-center">
-            <h1 class="col-md text-white" title="Dados do COVID-19 no Brasil">Dados do COVID-19 no Brasil</h1>
+        <div class="row">
+            <div class="col-11 text-center">
+                <h1 class="text-white" title="Dados do COVID-19 no Brasil">Dados do COVID-19 no Brasil</h1>
+            </div>
+            <div class="col-sm-1 text-right">
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#sobre" aria-expanded="false" aria-controls="sobre" title="Sobre" id="toggleSobre">
+                    <svg id="iconToggle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="28px" height="28px" transform='rotate(0)'><path d="M0 0h24v24H0V0z" fill="none"/><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                </button>
+            </div>
         </div>
         <hr>
-        <div class="ml-2 row">
-            <h6 class="col-md text-white" style="font-size: 90%">Produto acadêmico desenvolvido para contribuir no enfretamento do COVID-19. Desenvolvido por Lucas Santos e Ângela Magalhães, estudantes do curso de Engenharia de Computação (UFC), durante seu período como alunos da disciplina de Economia e Sociedade do Curso de Economia (UFC) sob orientação do Prof. Daniel Lavor.</h6>
+        <div class="m-2 collapse" id="sobre">
+            <h6 class="ml-3 mr-3 row text-white">
+                Produto acadêmico desenvolvido para contribuir no enfretamento do COVID-19. 
+                Desenvolvido por Lucas Santos e Ângela Magalhães, estudantes do curso de Engenharia de Computação (UFC), 
+                durante seu período como alunos da disciplina de Economia e Sociedade do Curso de Economia (UFC) 
+                sob orientação do Prof. Daniel Lavor.
+            </h6>
+            <br>
+            <h6 class="ml-3 mr-3 row text-white">
+                Dados consumidos a partir da API do 
+                <a class="text-light ml-1 mr-1" href="https://brasil.io/dataset/covid19/caso_full/" target="_blank" 
+                rel="noopener noreferrer" title="Visite a página da API COVI-19 do Brasil.IO">Brasil.IO</a>
+                tendo como fonte principal os números as Secretarias Estaduais de Saúde.
+            </h6>
         </div>
     </div>
 
@@ -209,6 +228,13 @@
 
     <script>
         //INICIALIZAÇÕES
+        $('#toggleSobre').click((evt) =>{
+            if ($('#iconToggle').attr('transform') == 'rotate(0)')
+                $('#iconToggle').attr('transform', 'rotate(180)')
+            else
+                $('#iconToggle').attr('transform', 'rotate(0)')
+        })
+
         $('#estado').prop('disabled', true)
         $('#estado').selectpicker('refresh')
         $('#municipio').prop('disabled', true)      
