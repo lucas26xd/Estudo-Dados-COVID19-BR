@@ -65,7 +65,7 @@ function hoje_municipios() { // Pega ultimos dados de cada municipio
 
 function get_brasil_io(regiao, estado, municipio, full, dtIni, dtEnd) { // Pega dados da API do Brasil IO ?search=&epidemiological_week=&date=&order_for_place=&state=CE&city=Cruz&city_ibge_code=&place_type=city&last_available_date=&is_last=False&is_repeated=
     $('#table').bootstrapTable({data: []}) // caso seja a primeira vez que a tabela seja povoada
-    var url = 'https://brasil.io/api/dataset/covid19/caso_full/data/?format=json'
+    var url = '//brasil.io/api/v1/dataset/covid19/caso_full/data/?format=json'
     var municipio_list = []
     if(estado != 'Todos') {
         url += `&state=${estado}&place_type=city`
@@ -82,6 +82,7 @@ function get_brasil_io(regiao, estado, municipio, full, dtIni, dtEnd) { // Pega 
         req_brasil_io(url, regiao, municipio_list, dtIni, dtEnd)
     } else
         req_brasil_io(url, regiao, municipio_list)
+    // console.log(url)
 }
 
 function req_brasil_io(url, regiao='Todas', municipio_list=[], dateIni='', dateEnd='', data=[]) {
@@ -113,7 +114,8 @@ function req_brasil_io(url, regiao='Todas', municipio_list=[], dateIni='', dateE
             })
             if (json['next'] != null && ((dateIni == '' && dateEnd == '') || (dateLinha <= dateEnd || dateLinha >= dateIni))) {
                 console.log('Chamou outra página')
-                req_brasil_io(json['next'], regiao, municipio_list, dateIni, dateEnd, table)
+                url = json['next'].substring(5) // retira o http:
+                req_brasil_io(url, regiao, municipio_list, dateIni, dateEnd, table)
             } else {
                 $('#table').bootstrapTable('load', table)
             }
